@@ -9,7 +9,7 @@ public class TurnTests
     {
         //arrange
         var dice = new Dice();
-        var turn = new Turn(dice);
+        var turn = new Turn();
         //act
         //turn.TakeTurn();
         var actualNumberOfRollsLeft = turn.GetNumberOfRollsLeft();
@@ -23,9 +23,9 @@ public class TurnTests
     {
         //arrange
         var dice = new Dice();
-        var turn = new Turn(dice);
+        var turn = new Turn();
         //act
-        turn.TakeTurn(dice);
+        turn.TakeTurn(dice, turn.AvailableDice);
         var actualNumberOfRollsLeft = turn.GetNumberOfRollsLeft();
         var expectedNumberOfRollsLeft = 2;
         //assert

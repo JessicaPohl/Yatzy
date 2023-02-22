@@ -2,13 +2,10 @@ namespace Yatzy.Models;
 
 public class Dice
 {
-    public int AvailableDice { get; set; }
+  
     private readonly Random _random = new Random();
-
-    public Dice()
-    {
-        AvailableDice = 5;
-    }
+    public int[] CurrentRolledDice { get; set; }
+    
     public int RollDie()
     {
         return _random.Next(1, 7);
@@ -21,7 +18,8 @@ public class Dice
         {
             rolledDice[i] = RollDie();
         }
-    
+
+        CurrentRolledDice = rolledDice;
         return rolledDice;
     }
 }

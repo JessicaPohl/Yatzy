@@ -28,7 +28,7 @@ public class DiceTests
         var dice = new Dice();
         //act
         var diceRolled = dice.RollDice(numberOfAvailableDice);
-        var actualNumberOfDiceRolled = diceRolled.Length;
+        var actualNumberOfDiceRolled = dice.CurrentRolledDice.Length;
         //assert
         Assert.Equal(actualNumberOfDiceRolled, expectedNumberOfDiceRolled);
     }

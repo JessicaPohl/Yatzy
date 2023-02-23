@@ -9,19 +9,21 @@ public class TurnTests
     private readonly Mock<IPlayerChoice> _playerChoiceMock;
     private readonly Mock<IParser> _parserMock;
     private readonly Mock<IDice> _diceMock;
+    private readonly Mock<IIOHandler> _ioHandlerMock;
     
     public TurnTests()
     {
         _playerChoiceMock = new Mock<IPlayerChoice>();
         _parserMock = new Mock<IParser>();
         _diceMock = new Mock<IDice>();
+        _ioHandlerMock = new Mock<IIOHandler>();
     }
     
     [Fact]
     public void WhenTurnIsTaken_PlayerCanRollDiceThreeTimes()
     {
         //arrange
-        var turn = new Turn(_playerChoiceMock.Object, _parserMock.Object);
+        var turn = new Turn(_playerChoiceMock.Object, _parserMock.Object, _ioHandlerMock.Object);
         //act
         var actualNumberOfRollsLeft = turn.GetNumberOfRollsLeft();
         var expectedNumberOfRollsLeft = 3;
@@ -30,15 +32,14 @@ public class TurnTests
     }
     
     [Fact]
-    public void WhenTurnIsTakenAndPlayerRollsDice_NumberOfRollsLeftDecreasesByOne()
+    public void WhenTurnIsTaken_NumberOfRollsLeftIs0AtTheEndOfTheTurn()
     {
         //arrange
-        _playerChoiceMock.Setup(x => x.GetCurrentPlayerChoice()).Returns("-,-,5,5,-");
-        var turn = new Turn(_playerChoiceMock.Object, _parserMock.Object);
+        var turn = new Turn(_playerChoiceMock.Object, _parserMock.Object, _ioHandlerMock.Object);
         //act
         turn.TakeTurn(_diceMock.Object);
         var actualNumberOfRollsLeft = turn.GetNumberOfRollsLeft();
-        var expectedNumberOfRollsLeft = 2;
+        var expectedNumberOfRollsLeft = 0;
         //assert
         Assert.Equal(expectedNumberOfRollsLeft, actualNumberOfRollsLeft);
     }

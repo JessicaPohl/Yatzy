@@ -1,6 +1,8 @@
+using Yatzy.Interfaces;
+
 namespace Yatzy.Models;
 
-public class Dice
+public class Dice : IDice
 {
   
     private readonly Random _random = new Random();

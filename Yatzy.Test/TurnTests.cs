@@ -6,15 +6,23 @@ namespace Yatzy.Test;
 
 public class TurnTests
 {
+    private readonly Mock<IPlayerChoice> _playerChoiceMock;
+    private readonly Mock<IParser> _parserMock;
+    private readonly Mock<IDice> _diceMock;
+    
+    public TurnTests()
+    {
+        _playerChoiceMock = new Mock<IPlayerChoice>();
+        _parserMock = new Mock<IParser>();
+        _diceMock = new Mock<IDice>();
+    }
+    
     [Fact]
     public void WhenTurnIsTaken_PlayerCanRollDiceThreeTimes()
     {
         //arrange
-        var playerChoice = new PlayerChoice();
-        var parser = new Parser();
-        var turn = new Turn(playerChoice, parser);
+        var turn = new Turn(_playerChoiceMock.Object, _parserMock.Object);
         //act
-        //turn.TakeTurn();
         var actualNumberOfRollsLeft = turn.GetNumberOfRollsLeft();
         var expectedNumberOfRollsLeft = 3;
         //assert
@@ -25,13 +33,10 @@ public class TurnTests
     public void WhenTurnIsTakenAndPlayerRollsDice_NumberOfRollsLeftDecreasesByOne()
     {
         //arrange
-        var dice = new Dice();
-        var playerChoiceMock = new Mock<IPlayerChoice>();
-        var parser = new Parser();
-        playerChoiceMock.Setup(x => x.GetCurrentPlayerChoice()).Returns("-,-,5,5,-");
-        var turn = new Turn(playerChoiceMock.Object, parser);
+        _playerChoiceMock.Setup(x => x.GetCurrentPlayerChoice()).Returns("-,-,5,5,-");
+        var turn = new Turn(_playerChoiceMock.Object, _parserMock.Object);
         //act
-        turn.TakeTurn(dice);
+        turn.TakeTurn(_diceMock.Object);
         var actualNumberOfRollsLeft = turn.GetNumberOfRollsLeft();
         var expectedNumberOfRollsLeft = 2;
         //assert

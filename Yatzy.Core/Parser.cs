@@ -6,8 +6,6 @@ public class Parser : IParser
 {
     private int _numberOfDiceToReRoll = 0;
 
-    private string[] selectedDice = new string[5];
-    
     // var userInput = _ioHandler.GetUserInput();
     //string userInput = "-,-,5,5,-";
 
@@ -32,9 +30,6 @@ public class Parser : IParser
             list.Add(diceValue);
         }
 
-        selectedDice = list.ToArray();
-
-        return selectedDice;
-
+        return list.ToArray();
     }
 }

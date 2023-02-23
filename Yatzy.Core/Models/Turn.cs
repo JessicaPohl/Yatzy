@@ -24,7 +24,7 @@ public class Turn
     {
         return NumberOfRollsLeft;
     }
-    public void TakeTurn(Dice dice)
+    public void TakeTurn(IDice dice)
     {
         var availableDice = _parser.ConvertUserInputIntoNumberOfDiceToReRoll(_playerChoice.GetCurrentPlayerChoice());
         for (var i = 0; i <= NumberOfRollsLeft; i++)

@@ -6,7 +6,7 @@ public class ParserTests
     [InlineData("-,-,5,5,-", 3)]
     [InlineData("-,5,5,5,-", 2)]
     [InlineData("-,3,2,1,4", 1)]
-    public void WhenCovertUserInputIntoNUmberOfDiceToReRoll_ReturnCorrectNumberOfDiceToReRoll(string userInput, int expectedNumberOfDiceToReRoll)
+    public void WhenCovertUserInputIntoNUmberOfDiceToReRoll_ReturnCorrectNumberOfDiceToReRoll(string? userInput, int expectedNumberOfDiceToReRoll)
     {
         //arrange
         var parser = new Parser();
@@ -18,7 +18,7 @@ public class ParserTests
     
     [Theory]
     [MemberData(nameof(Data), MemberType = typeof(ParserTests))]
-    public void WhenCovertUserInputIntoCurrentPlayerSelection_ReturnCorrectScorablePlayerSelection(string userInput, string[] expectedOutputArray)
+    public void WhenCovertUserInputIntoCurrentPlayerSelection_ReturnCorrectScorablePlayerSelection(string? userInput, string[] expectedOutputArray)
     {
         //arrange
         var parser = new Parser();

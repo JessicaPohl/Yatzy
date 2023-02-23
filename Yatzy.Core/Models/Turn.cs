@@ -5,7 +5,7 @@ namespace Yatzy.Models;
 public class Turn
 {
     private readonly int _numberOfRollsLeftAtTheStart = 3;
-    private int _numberOfAvailableDiceAtTheStart = 5;
+    private readonly int _numberOfAvailableDiceAtTheStart = 5;
     private readonly IPlayerChoice _playerChoice;
     private readonly IParser _parser;
     public int AvailableDice { get; set; }
@@ -15,7 +15,6 @@ public class Turn
     {
         NumberOfRollsLeft = _numberOfRollsLeftAtTheStart;
         AvailableDice = _numberOfAvailableDiceAtTheStart;
-        var dice = new Dice();
         _playerChoice = playerChoice;
         _parser = parser;
     }

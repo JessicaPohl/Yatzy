@@ -24,4 +24,16 @@ public class Dice : IDice
         CurrentRolledDice = rolledDice;
         return rolledDice;
     }
+
+    public string GetCurrentRolledDiceFormatted(int[] currentRoll)
+    {
+        List<string> currentRolledDiceList = new List<string>();
+        foreach (int die in currentRoll)
+        {
+            currentRolledDiceList.Add(die.ToString());
+        }
+        string currentRolledDiceOutput = string.Join(",", currentRolledDiceList);
+        
+        return currentRolledDiceOutput;
+    }
 }

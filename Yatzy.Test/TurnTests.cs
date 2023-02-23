@@ -10,6 +10,7 @@ public class TurnTests
     private readonly Mock<IParser> _parserMock;
     private readonly Mock<IDice> _diceMock;
     private readonly Mock<IIOHandler> _ioHandlerMock;
+    private readonly Mock<IPlayerChoiceValidator> _playerChoiceValidator;
     
     public TurnTests()
     {
@@ -17,13 +18,14 @@ public class TurnTests
         _parserMock = new Mock<IParser>();
         _diceMock = new Mock<IDice>();
         _ioHandlerMock = new Mock<IIOHandler>();
+        _playerChoiceValidator = new Mock<IPlayerChoiceValidator>();
     }
     
     [Fact]
     public void WhenTurnIsTaken_PlayerCanRollDiceThreeTimes()
     {
         //arrange
-        var turn = new Turn(_playerChoiceMock.Object, _parserMock.Object, _ioHandlerMock.Object);
+        var turn = new Turn(_playerChoiceMock.Object, _playerChoiceValidator.Object, _parserMock.Object, _ioHandlerMock.Object, _diceMock.Object);
         //act
         var actualNumberOfRollsLeft = turn.GetNumberOfRollsLeft();
         var expectedNumberOfRollsLeft = 3;
@@ -35,7 +37,8 @@ public class TurnTests
     public void WhenTurnIsTaken_NumberOfRollsLeftIs0AtTheEndOfTheTurn()
     {
         //arrange
-        var turn = new Turn(_playerChoiceMock.Object, _parserMock.Object, _ioHandlerMock.Object);
+        _playerChoiceValidator.Setup(x => x.CheckSelection()).Returns(true);
+        var turn = new Turn(_playerChoiceMock.Object, _playerChoiceValidator.Object, _parserMock.Object, _ioHandlerMock.Object, _diceMock.Object);
         //act
         turn.TakeTurn(_diceMock.Object);
         var actualNumberOfRollsLeft = turn.GetNumberOfRollsLeft();

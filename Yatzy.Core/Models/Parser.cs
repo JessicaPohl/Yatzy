@@ -4,19 +4,18 @@ namespace Yatzy;
 
 public class Parser : IParser
 {
-    private int _numberOfDiceToReRoll = 0;
 
     // var userInput = _ioHandler.GetUserInput();
     //string userInput = "-,-,5,5,-";
-
+    
     public int ConvertUserInputIntoNumberOfDiceToReRoll(string userInput)
     {
-        var splitUserInput = userInput.Split(",");
-        foreach (string diceValue in splitUserInput)
+        var numberOfDiceToReRoll = 0;
+        foreach (char diceValue in userInput)
         {
-            if (diceValue == "-") _numberOfDiceToReRoll++;
+            if (diceValue == '-') numberOfDiceToReRoll++;
         }
-        return _numberOfDiceToReRoll;
+        return numberOfDiceToReRoll;
     }
     
     public string[] ConvertUserInputIntoCurrentPlayerSelection(string userInput)

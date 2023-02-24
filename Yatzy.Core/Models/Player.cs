@@ -2,7 +2,7 @@ using Yatzy.Interfaces;
 
 namespace Yatzy;
 
-public class PlayerChoice : IPlayerChoice
+public class Player : IPlayer
 
 {
     private string? _currentPlayerChoice = "";
@@ -11,7 +11,7 @@ public class PlayerChoice : IPlayerChoice
     private readonly IIOHandler _ioHandler;
     public string? CurrentPlayerChoice { get; }
 
-    public PlayerChoice(IParser parser, IIOHandler ioHandler)
+    public Player(IParser parser, IIOHandler ioHandler)
     {
         _parser = parser;
         _ioHandler = ioHandler;

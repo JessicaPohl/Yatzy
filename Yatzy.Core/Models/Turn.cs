@@ -6,7 +6,6 @@ public class Turn : ITurn
 {
     private readonly int _numberOfRollsLeftAtTheStart = 3;
     private readonly int _numberOfAvailableDiceAtTheStart = 5;
-    private readonly IPlayerChoice _playerChoice;
     private readonly IParser _parser;
     private readonly IIOHandler _ioHandler;
     private readonly IDice _dice;
@@ -17,11 +16,10 @@ public class Turn : ITurn
     public string? CurrentPlayerInput { get; set; }
 
 
-    public Turn(IPlayerChoice playerChoice, IParser parser, IIOHandler ioHandler, IDice dice)
+    public Turn(IParser parser, IIOHandler ioHandler, IDice dice)
     {
         NumberOfRollsLeft = _numberOfRollsLeftAtTheStart;
         AvailableDice = _numberOfAvailableDiceAtTheStart;
-        _playerChoice = playerChoice;
         _parser = parser;
         _ioHandler = ioHandler;
         _dice = dice;
@@ -31,20 +29,20 @@ public class Turn : ITurn
         return NumberOfRollsLeft;
     }
 
-    public void TakeTurn(IDice dice)
+    public void TakeTurn(IDice dice, IPlayer player)
     {
         while (NumberOfRollsLeft > 0)
         {
             NumberOfRollsLeft--;
             //roll dice
-            CurrentDiceRoll = _dice.RollDice(AvailableDice);
+            CurrentDiceRoll = dice.RollDice(AvailableDice);
             _ioHandler.Print($"You rolled... {_dice.GetCurrentRolledDiceFormatted(CurrentDiceRoll)}");
 
             //prompt player to make selection
             _ioHandler.Print($"Please select which dice from this roll you would like to keep (e.g. (-,1,-,-,3): ");
 
             //player to select dice to keep
-            CurrentPlayerInput = _playerChoice.GetCurrentPlayerChoice();
+            CurrentPlayerInput = player.GetCurrentPlayerChoice();
             _ioHandler.Print($"You have selected: {CurrentPlayerInput}");
 
             //calculate dice to re-roll based on last input

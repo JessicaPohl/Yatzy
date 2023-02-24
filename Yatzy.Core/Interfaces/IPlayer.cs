@@ -1,6 +1,6 @@
 namespace Yatzy.Interfaces;
 
-public interface IPlayerChoice
+public interface IPlayer
 {
     public string? GetCurrentPlayerChoice();
 }

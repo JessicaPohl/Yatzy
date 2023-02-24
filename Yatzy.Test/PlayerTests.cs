@@ -5,20 +5,14 @@ using Yatzy.Models;
 namespace Yatzy.Test;
 
 public class PlayerTests
-{  
-    private readonly Mock<IPlayer> _playerMock;
+{
     private readonly Mock<IParser> _parserMock;
-    private readonly Mock<IDice> _diceMock;
     private readonly Mock<IIOHandler> _ioHandlerMock;
-    private readonly Mock<ITurn> _turnMock;
 
     public PlayerTests()
     {
-        _playerMock = new Mock<IPlayer>();
         _parserMock = new Mock<IParser>();
-        _diceMock = new Mock<IDice>();
         _ioHandlerMock = new Mock<IIOHandler>();
-        _turnMock = new Mock<ITurn>();
     }
     
     [Fact] 

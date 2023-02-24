@@ -4,20 +4,20 @@ namespace Yatzy.Models;
 
 public class Turn : ITurn
 {
-    private readonly IParser _parser;
     private readonly IIOHandler _ioHandler;
     private readonly IDice _dice;
     private readonly int _numberOfRollsLeftAtTheStart = 3;
+    private readonly IValidator _validator;
     private int[] CurrentDiceRoll { get; set; }
 
     public int NumberOfRollsLeft { get; set; }
 
 
-    public Turn(IParser parser, IIOHandler ioHandler, IDice dice)
+    public Turn(IIOHandler ioHandler, IDice dice, IValidator validator)
     {
-        _parser = parser;
         _ioHandler = ioHandler;
         _dice = dice;
+        _validator = validator;
         NumberOfRollsLeft = _numberOfRollsLeftAtTheStart;
     }
     public void TakeTurn(IDice dice, IPlayer player)
@@ -33,6 +33,11 @@ public class Turn : ITurn
 
             //player to select dice to keep
             player.GetCurrentPlayerChoice();
+            bool isValidChoice = _validator.ValidatePlayerDiceChoice(player);
+            while (!isValidChoice|| player.CurrentPlayerChoice == null)
+            {
+                player.GetCurrentPlayerChoice();
+            }
             _ioHandler.Print($"You have selected: {player.CurrentPlayerChoice}");
 
             //calculate dice to re-roll based on last input & inform player

@@ -13,7 +13,7 @@ public class Player : IPlayer
     private readonly IParser _parser;
     private readonly IIOHandler _ioHandler;
     public string? PlayerName { get; set; }
-    public string? CurrentPlayerChoice { get; set; }
+    public string CurrentPlayerChoice { get; set; }
     public int AvailableDice { get; set; }
 
     public Player(IParser parser, IIOHandler ioHandler)

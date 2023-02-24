@@ -5,27 +5,34 @@ namespace Yatzy;
 public class Player : IPlayer
 
 {
-    private string? _currentPlayerChoice = "";
-    private string[] _currentSelectedDice = new string[5];
+    private readonly string? _playerName = "";
+ 
+    private readonly int _numberOfAvailableDiceAtTheStart = 5;
+    
+    private readonly string? _currentPlayerChoice = "";
     private readonly IParser _parser;
     private readonly IIOHandler _ioHandler;
-    public string? CurrentPlayerChoice { get; }
+    public string? PlayerName { get; set; }
+    public string? CurrentPlayerChoice { get; set; }
+    public int AvailableDice { get; set; }
 
     public Player(IParser parser, IIOHandler ioHandler)
     {
         _parser = parser;
         _ioHandler = ioHandler;
         CurrentPlayerChoice = _currentPlayerChoice;
-    }
-    
-    public string? GetCurrentPlayerChoice() //gets input string
-    {
-        _currentPlayerChoice = _ioHandler.GetUserInput();
-        return _currentPlayerChoice;
+        PlayerName = _playerName;
+      
+        AvailableDice = _numberOfAvailableDiceAtTheStart;
     }
 
-    public void GetCurrentSelectedDice() //converts input into number of dice to reroll
+    public void GetCurrentPlayerChoice() 
     {
-        _currentSelectedDice = _parser.ConvertUserInputIntoCurrentPlayerSelection(_currentPlayerChoice);
+        CurrentPlayerChoice = _ioHandler.GetUserInput();
+    }
+
+    public void GetCurrentNumberOfDiceToReRoll() 
+    {
+        AvailableDice = _parser.ConvertUserInputIntoNumberOfDiceToReRoll(CurrentPlayerChoice);
     }
 }

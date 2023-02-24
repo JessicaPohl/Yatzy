@@ -27,9 +27,21 @@ public class DiceTests
         //arrange
         var dice = new Dice();
         //act
-        var diceRolled = dice.RollDice(numberOfAvailableDice);
+        dice.RollDice(numberOfAvailableDice);
         var actualNumberOfDiceRolled = dice.CurrentRolledDice.Length;
         //assert
         Assert.Equal(actualNumberOfDiceRolled, expectedNumberOfDiceRolled);
+    }
+    
+    [Fact]
+    public void WhenCurrentRolledDiceGetFormatted_CorrectFormatIsReturned()
+    {
+        //arrange
+        var dice = new Dice();
+        //act
+        var actualDiceFormatted = dice.GetCurrentRolledDiceFormatted(new[] { 5, 5, 5, 5, 5 });
+        var expectedDiceFormatted = "5,5,5,5,5";
+        //assert
+        Assert.Equal(expectedDiceFormatted, actualDiceFormatted);
     }
 }

@@ -25,7 +25,7 @@ public class TurnTests
         //arrange
         var turn = new Turn(_parserMock.Object, _ioHandlerMock.Object, _diceMock.Object);
         //act
-        var actualNumberOfRollsLeft = turn.GetNumberOfRollsLeft();
+        var actualNumberOfRollsLeft = turn.NumberOfRollsLeft;
         var expectedNumberOfRollsLeft = 3;
         //assert
         Assert.Equal(expectedNumberOfRollsLeft, actualNumberOfRollsLeft);
@@ -35,10 +35,17 @@ public class TurnTests
     public void WhenTurnIsTaken_NumberOfRollsLeftIs0AtTheEndOfTheTurn()
     {
         //arrange
+        _playerMock.SetupGet(x => x.AvailableDice).Returns(5);
+        _playerMock.SetupGet(x => x.PlayerName).Returns(It.IsAny<string>);
+        _playerMock.SetupGet(x=> x.CurrentPlayerChoice).Returns("(3,3,3,3,3)");
+        _diceMock.Setup(x=> x.RollDice(5)).Returns( new[] {3,3,3,3,3});
+        _diceMock.Setup(x=> x.GetCurrentRolledDiceFormatted(new[] {3,3,3,3,3})).Returns( "(3,3,3,3,3)");
+        _parserMock.Setup(x => x.ConvertUserInputIntoNumberOfDiceToReRoll("(3,3,3,3,3)")).Returns(5);
+        
         var turn = new Turn(_parserMock.Object, _ioHandlerMock.Object, _diceMock.Object);
         //act
         turn.TakeTurn(_diceMock.Object, _playerMock.Object);
-        var actualNumberOfRollsLeft = turn.GetNumberOfRollsLeft();
+        var actualNumberOfRollsLeft = turn.NumberOfRollsLeft;
         var expectedNumberOfRollsLeft = 0;
         //assert
         Assert.Equal(expectedNumberOfRollsLeft, actualNumberOfRollsLeft);

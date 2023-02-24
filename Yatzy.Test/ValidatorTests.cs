@@ -14,7 +14,8 @@ public class ValidatorTests
     }
 
     [Theory]
-    [InlineData("(5,5,5,5,5)", true)]
+    [InlineData("5,5,5,5,5", true)]
+    [InlineData("(5,5,5,5,5)", false)]
     [InlineData("(5,5,5,5,5,1)", false)]
     [InlineData("(5,4,3,2)", false)]
     [InlineData("(-,-,-,)", false)]
@@ -26,7 +27,7 @@ public class ValidatorTests
         _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns(currentPlayerChoice);
         //act
         var validator = new Validator();
-        var actualValidatorResult = validator.ValidatePlayerDiceChoice(_playerMock.Object);
+        var actualValidatorResult = validator.IsValidChoice(_playerMock.Object);
         //assert
         Assert.Equal(expectedValidatorResult, actualValidatorResult);
     }

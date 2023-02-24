@@ -6,9 +6,9 @@ namespace Yatzy.Models;
 public class Validator : IValidator
 {
 
-    public bool ValidatePlayerDiceChoice(IPlayer player)
+    public bool IsValidChoice(IPlayer player)
     {
-        string regex = @"^\((5|-),(5|-),(5|-),(5|-),(5|-)\)$";
+        string regex = @"^(-|\d),(-|\d),(-|\d),(-|\d),(-|\d)$";
         var currentPlayerChoice = player.CurrentPlayerChoice;
         return Regex.IsMatch(currentPlayerChoice, regex);
     }

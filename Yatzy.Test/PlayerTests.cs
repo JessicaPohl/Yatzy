@@ -21,10 +21,10 @@ public class PlayerTests
         //arrange
         var player = new Player(_parserMock.Object, _ioHandlerMock.Object);
         //act
-        _ioHandlerMock.Setup(x => x.GetUserInput()).Returns(("(5,5,5,5,-)"));
+        _ioHandlerMock.Setup(x => x.GetUserInput()).Returns("5,5,5,5,-");
         player.GetCurrentPlayerChoice();
         var actualCurrentPlayerChoice = player.CurrentPlayerChoice;
-        var expectedCurrentPlayerChoice = "(5,5,5,5,-)";
+        var expectedCurrentPlayerChoice = "5,5,5,5,-";
         //assert
         Assert.Equal(expectedCurrentPlayerChoice, actualCurrentPlayerChoice);
     }
@@ -35,9 +35,9 @@ public class PlayerTests
         //arrange
         var player = new Player(_parserMock.Object, _ioHandlerMock.Object);
         //act
-        _ioHandlerMock.Setup(x => x.GetUserInput()).Returns(("(5,5,5,5,-)"));
+        _ioHandlerMock.Setup(x => x.GetUserInput()).Returns("5,5,5,5,-");
         player.GetCurrentPlayerChoice();
-        _parserMock.Setup(x => x.ConvertUserInputIntoNumberOfDiceToReRoll("(5,5,5,5,-)")).Returns(1);
+        _parserMock.Setup(x => x.ConvertUserInputIntoNumberOfDiceToReRoll("5,5,5,5,-")).Returns(1);
         player.GetCurrentNumberOfDiceToReRoll();
         var actualNumberOfDiceToReRoll = player.AvailableDice;
         var expectedNumberOfDiceToReRoll = 1;

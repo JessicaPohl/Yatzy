@@ -33,9 +33,9 @@ public class Turn : ITurn
 
             //player to select dice to keep
             player.GetCurrentPlayerChoice();
-            bool isValidChoice = _validator.ValidatePlayerDiceChoice(player);
-            while (!isValidChoice|| player.CurrentPlayerChoice == null)
+            while (_validator.IsValidChoice(player) == false)
             {
+                _ioHandler.Print("Your input was invalid, please try again: ");
                 player.GetCurrentPlayerChoice();
             }
             _ioHandler.Print($"You have selected: {player.CurrentPlayerChoice}");

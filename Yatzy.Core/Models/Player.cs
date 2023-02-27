@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Yatzy.Interfaces;
 
 namespace Yatzy;
@@ -15,6 +16,8 @@ public class Player : IPlayer
     public string? PlayerName { get; set; }
     public string CurrentPlayerChoice { get; set; }
     public int AvailableDice { get; set; }
+    
+    public int[] EndOfTurnSelection { get; set; }
 
     public Player(IParser parser, IIOHandler ioHandler)
     {
@@ -24,6 +27,7 @@ public class Player : IPlayer
         PlayerName = _playerName;
       
         AvailableDice = _numberOfAvailableDiceAtTheStart;
+        EndOfTurnSelection = new int[5];
     }
 
     public void GetCurrentPlayerChoice() 
@@ -35,4 +39,10 @@ public class Player : IPlayer
     {
         AvailableDice = _parser.ConvertUserInputIntoNumberOfDiceToReRoll(CurrentPlayerChoice);
     }
+    
+    private void AddSelectedDiceToEndOfTurnSelection(IPlayer player)
+    {
+        EndOfTurnSelection = (Regex.Matches(player.CurrentPlayerChoice, "(-?[0-9]+)").OfType<Match>().Select(m => int.Parse(m.Value)).ToArray());
+    }
+
 }

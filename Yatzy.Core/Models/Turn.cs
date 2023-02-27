@@ -33,7 +33,7 @@ public class Turn : ITurn
 
             //player to select dice to keep
             player.GetCurrentPlayerChoice();
-            while (_validator.IsValidChoice(player) == false)
+            while (_validator.IsValidChoice(player, dice) == false)
             {
                 _ioHandler.Print("Your input was invalid, please try again: ");
                 player.GetCurrentPlayerChoice();

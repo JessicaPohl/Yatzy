@@ -40,7 +40,7 @@ public class TurnTests
         _playerMock.SetupGet(x => x.AvailableDice).Returns(5);
         _playerMock.SetupGet(x => x.PlayerName).Returns(It.IsAny<string>);
         _playerMock.SetupGet(x=> x.CurrentPlayerChoice).Returns("3,3,3,3,3");
-        _validatorMock.Setup(x => x.IsValidChoice(_playerMock.Object)).Returns(true);
+        _validatorMock.Setup(x => x.IsValidChoice(_playerMock.Object, _diceMock.Object)).Returns(true);
         _diceMock.Setup(x=> x.RollDice(5)).Returns( new[] {3,3,3,3,3});
         _diceMock.Setup(x=> x.GetCurrentRolledDiceFormatted(new[] {3,3,3,3,3})).Returns( "3,3,3,3,3");
         _parserMock.Setup(x => x.ConvertUserInputIntoNumberOfDiceToReRoll("3,3,3,3,3")).Returns(5);

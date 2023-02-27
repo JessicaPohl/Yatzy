@@ -16,19 +16,20 @@ public class ValidatorTests
     }
 
     [Theory]
-    [InlineData("5,5,5,5,5", true)]
+    [InlineData("5,5,5,5,5","5,5,5,5,5", true)]
     
-    [InlineData("(5,5,5,5,5)", false)]
-    [InlineData("(5,5,5,5,5,1)", false)]
-    [InlineData("(5,4,3,2)", false)]
-    [InlineData("(-,-,-,)", false)]
-    [InlineData("()", false)]
-    [InlineData("", false)]
-    public void WhenPlayerChoosesMoreThanFiveDice_ReturnsFalse(string currentPlayerChoice, bool expectedValidatorResult)
+    [InlineData("5,5,5,5,5","(5,5,5,5,5)", false)]
+    [InlineData("5,5,5,5,5", "(5,5,5,5,5,1)", false)]
+    [InlineData("5,5,5,5,5", "(5,4,3,2)", false)]
+    [InlineData("5,5,5,5,5", "(-,-,-,)", false)]
+    [InlineData("5,5,5,5,5", "()", false)]
+    [InlineData("5,5,5,5,5", "", false)]
+    public void WhenPlayerChoosesMoreThanFiveDice_ReturnsFalse(string currentRolledDice, string currentPlayerChoice, bool expectedValidatorResult)
     {
         //arrange
-        _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns(currentPlayerChoice);
-        _diceMock.Setup(x => x.GetCurrentRolledDiceFormatted(It.IsAny<int[]>())).Returns("5,5,5,5,5");
+        _playerMock.Setup(x => x.EndOfTurnSelection.ToString()).Returns(currentPlayerChoice);
+        _diceMock.Setup(x => x.GetCurrentRolledDiceFormatted(It.IsAny<int[]>())).Returns(currentRolledDice);
+        //_diceMock.Setup(x => x.GetCurrentRolledDiceFormatted(It.IsAny<int[]>())).Returns("5,5,5,5,5");
         //act
         var validator = new Validator(_playerMock.Object, _diceMock.Object);
         var actualValidatorResult = validator.IsValidChoice(_playerMock.Object, _diceMock.Object);
@@ -52,7 +53,7 @@ public class ValidatorTests
     public void WhenPlayerChoosesDiceTheyHaveNotCurrentlyRolled_ReturnsFalse(string currentRolledDice, string currentPlayerChoice, bool expectedValidatorResult)
     {
         //arrange
-        _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns(currentPlayerChoice);
+        _playerMock.Setup(x => x.EndOfTurnSelection.ToString()).Returns(currentPlayerChoice);
         _diceMock.Setup(x => x.GetCurrentRolledDiceFormatted(It.IsAny<int[]>())).Returns(currentRolledDice);
         //act
         var validator = new Validator(_playerMock.Object, _diceMock.Object);

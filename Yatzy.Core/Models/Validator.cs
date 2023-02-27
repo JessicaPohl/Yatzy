@@ -7,7 +7,7 @@ public class Validator : IValidator
 {
     private readonly IPlayer _player;
     private readonly IDice _dice;
-
+    
     public Validator(IPlayer player, IDice dice)
     {
         _player = player;
@@ -17,11 +17,10 @@ public class Validator : IValidator
     public bool IsValidChoice(IPlayer player, IDice dice)
     {
         string regex = @"^(-|\d),(-|\d),(-|\d),(-|\d),(-|\d)$";
-        var currentPlayerChoice = _player.CurrentPlayerChoice;
-        if (!Regex.IsMatch(currentPlayerChoice, regex)) return false;
+        if (!Regex.IsMatch(_player.EndOfTurnSelection.ToString(), regex)) return false;
         
-        int[] currentSelectedDice = Regex.Matches(_player.CurrentPlayerChoice, "(-?[0-9]+)").OfType<Match>().Select(m => int.Parse(m.Value)).ToArray();
-        int[] currentRolledDice = Regex.Matches(_dice.GetCurrentRolledDiceFormatted(_dice.CurrentRolledDice), "(-?[0-9]+)").OfType<Match>().Select(m => int.Parse(m.Value)).ToArray();
+        int[] currentSelectedDice = Regex.Matches(_player.EndOfTurnSelection.ToString(), "(-?[0-9]+)").OfType<Match>().Select(m => int.Parse(m.Value)).ToArray();
+        int[] currentRolledDice = Regex.Matches(_dice.GetCurrentRolledDiceFormatted(dice.CurrentRolledDice), "(-?[0-9]+)").OfType<Match>().Select(m => int.Parse(m.Value)).ToArray();
         
         Dictionary<int, int> countsRolledDice = new Dictionary<int, int>();
         foreach (int value in currentRolledDice)

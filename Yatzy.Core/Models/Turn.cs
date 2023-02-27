@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Yatzy.Interfaces;
 
 namespace Yatzy.Models;
@@ -9,7 +10,6 @@ public class Turn : ITurn
     private readonly int _numberOfRollsLeftAtTheStart = 3;
     private readonly IValidator _validator;
     private int[] CurrentDiceRoll { get; set; }
-
     public int NumberOfRollsLeft { get; set; }
 
 
@@ -29,16 +29,20 @@ public class Turn : ITurn
             _ioHandler.Print($"{player.PlayerName} rolled... {_dice.GetCurrentRolledDiceFormatted(CurrentDiceRoll)}");
 
             //prompt player to make selection
-            _ioHandler.Print($"Please select which dice from this roll you would like to keep (e.g. (-,1,-,-,3): ");
+            _ioHandler.Print($"Please select which dice you would like to keep (e.g. -,1,-,-,3 : ");
 
             //player to select dice to keep
             player.GetCurrentPlayerChoice();
+            player.AddSelectedDiceToEndOfTurnSelection();
+            player.FormatEndOfTurnDiceSelection();
             while (_validator.IsValidChoice(player, dice) == false)
             {
                 _ioHandler.Print("Your input was invalid, please try again: ");
                 player.GetCurrentPlayerChoice();
+                player.AddSelectedDiceToEndOfTurnSelection();
+                player.FormatEndOfTurnDiceSelection();
             }
-            _ioHandler.Print($"You have selected: {player.CurrentPlayerChoice}");
+            _ioHandler.Print($"You have selected: {player.EndOfTurnSelection}");
 
             //calculate dice to re-roll based on last input & inform player
             player.GetCurrentNumberOfDiceToReRoll();
@@ -57,5 +61,4 @@ public class Turn : ITurn
         // _ioHandler.Print("Which category do you want to score this turn in?");
 
     }
-    
 }

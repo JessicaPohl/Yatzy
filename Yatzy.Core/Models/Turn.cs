@@ -1,3 +1,4 @@
+using Yatzy.Enums;
 using Yatzy.Interfaces;
 
 namespace Yatzy.Models;
@@ -8,54 +9,83 @@ public class Turn : ITurn
     private readonly IDice _dice;
     private readonly int _numberOfRollsLeftAtTheStart = 3;
     private readonly IValidator _validator;
-    private int[] CurrentDiceRoll { get; set; }
-
+    public int[] CurrentDiceRoll { get; set; }
     public int NumberOfRollsLeft { get; set; }
-
-
     public Turn(IIOHandler ioHandler, IDice dice, IValidator validator)
     {
         _ioHandler = ioHandler;
-        _dice = dice;
         _validator = validator;
+        _dice = dice;
         NumberOfRollsLeft = _numberOfRollsLeftAtTheStart;
+        CurrentDiceRoll = new int[5];
     }
-    public void TakeTurn(IDice dice, IPlayer player)
+    public void TakeTurn(IDice dice, IPlayer player, IScoreCard scoreCard)
     {
+        player.AvailableDice = 5;
         while (NumberOfRollsLeft > 0)
         {
             //roll dice
             CurrentDiceRoll = dice.RollDice(player.AvailableDice);
             _ioHandler.Print($"{player.PlayerName} rolled... {_dice.GetCurrentRolledDiceFormatted(CurrentDiceRoll)}");
-
+            
             //prompt player to make selection
-            _ioHandler.Print($"Please select which dice from this roll you would like to keep (e.g. (-,1,-,-,3): ");
+            _ioHandler.Print($"Please select which dice from this roll you would like to keep (e.g. 1,3,-,-,-): ");
 
             //player to select dice to keep
             player.GetCurrentPlayerChoice();
-            while (_validator.IsValidChoice(player, dice) == false)
+            player.AddSelectedDiceToAllKeptDice(player);
+            while (_validator.IsValidChoice() == false)
             {
                 _ioHandler.Print("Your input was invalid, please try again: ");
                 player.GetCurrentPlayerChoice();
             }
             _ioHandler.Print($"You have selected: {player.CurrentPlayerChoice}");
-
-            //calculate dice to re-roll based on last input & inform player
             player.GetCurrentNumberOfDiceToReRoll();
             NumberOfRollsLeft--;
             if (player.AvailableDice == 0)
             {
                 NumberOfRollsLeft = 0;
-                return;
+                break;
             }
-            _ioHandler.Print($"You decided to reroll {player.AvailableDice} dice:");
-        } //all 3 rolls done
+            //calculate dice to re-roll based on last input & inform player
+            _ioHandler.Print($"You decided to re-roll {player.AvailableDice} dice:");
+            
+        }
         
-        // _ioHandler.Print($"Your dice after this roll: {GetEndOfTurnRolledDice(player)}");
-        // //scoring
-        // // prompt scoring
-        // _ioHandler.Print("Which category do you want to score this turn in?");
+        _ioHandler.Print($"How do you want to score your dice at the end of this turn: {player.CurrentPlayerChoice}? Enter the number of the category you want to score this turn as:  ");
 
+        foreach (ScoreCategory category in Enum.GetValues((typeof(ScoreCategory))))
+        {
+            if (scoreCard.GetCategoryScore(category) == -1)
+            {
+                _ioHandler.Print($"{(int)category}: {category.ToString()}");
+            }
+        }
+        
+        while (true)
+        {
+            //get input and check if valid category
+            if (int.TryParse(_ioHandler.GetUserInput(), out var categoryInt) && Enum.IsDefined(typeof(ScoreCategory), categoryInt))
+            {
+                player.ChosenCategory = (ScoreCategory)categoryInt;
+                if (scoreCard.GetCategoryScore(player.ChosenCategory) == -1)
+                {
+                    break;
+                }
+                {
+                    _ioHandler.Print("You have already scored that category. Pick another category to score.");
+                }
+            }
+            else
+            {
+                _ioHandler.Print("Invalid input. Choose a category by entering the corresponding number");
+            }
+        }
+        
+        scoreCard.CalculateScore();
+        _ioHandler.Print($"You have chosen {player.ChosenCategory}, your score is: {scoreCard.GetCategoryScore(player.ChosenCategory)}");
+        
+        //reset number of rolls left for player 2 turn
+        NumberOfRollsLeft = 3;
     }
-    
 }

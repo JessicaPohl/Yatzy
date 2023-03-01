@@ -44,4 +44,5 @@ public class PlayerTests
         //assert
         Assert.Equal(expectedNumberOfDiceToReRoll, actualNumberOfDiceToReRoll);
     }
+    
 }

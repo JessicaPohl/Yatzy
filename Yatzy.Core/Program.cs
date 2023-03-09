@@ -4,7 +4,6 @@ using Yatzy;
 using Yatzy.Controller;
 using Yatzy.Models;
 
-
 var parser = new Parser();
 var consoleHandler = new ConsoleHandler();
 var player1 = new Player(parser, consoleHandler);
@@ -15,4 +14,5 @@ var scoreCard2 = new ScoreCard(player2);
 var validator = new Validator(player1, dice);
 var turn = new Turn(consoleHandler, dice, validator);
 var game = new Game(turn, dice, player1, player2, consoleHandler, scoreCard1, scoreCard2);
+
 game.PlayGame();

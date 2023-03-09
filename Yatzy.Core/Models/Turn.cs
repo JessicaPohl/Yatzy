@@ -7,8 +7,9 @@ public class Turn : ITurn
 {
     private readonly IIOHandler _ioHandler;
     private readonly IDice _dice;
-    private readonly int _numberOfRollsLeftAtTheStart = 3;
     private readonly IValidator _validator;
+    
+    private readonly int _numberOfRollsLeftAtTheStart = 3;
     public int[] CurrentDiceRoll { get; set; }
     public int NumberOfRollsLeft { get; set; }
     public Turn(IIOHandler ioHandler, IDice dice, IValidator validator)
@@ -54,6 +55,7 @@ public class Turn : ITurn
         
         _ioHandler.Print($"How do you want to score your dice at the end of this turn: {player.CurrentPlayerChoice}? Enter the number of the category you want to score this turn as:  ");
 
+        //print available score categories
         foreach (ScoreCategory category in Enum.GetValues((typeof(ScoreCategory))))
         {
             if (scoreCard.GetCategoryScore(category) == -1)
@@ -62,12 +64,16 @@ public class Turn : ITurn
             }
         }
         
+        //get valid score category pick from player, check choice is valid and category does not yet have a score
         while (true)
         {
-            //get input and check if valid category
+            //get input and check if valid category, check valid int and compare category int to valid score category
             if (int.TryParse(_ioHandler.GetUserInput(), out var categoryInt) && Enum.IsDefined(typeof(ScoreCategory), categoryInt))
             {
+                //if a valid score category is selected, set player's chosen category
                 player.ChosenCategory = (ScoreCategory)categoryInt;
+                
+                //check if category has already been scored, if has not been scored yet, break
                 if (scoreCard.GetCategoryScore(player.ChosenCategory) == -1)
                 {
                     break;
@@ -82,6 +88,7 @@ public class Turn : ITurn
             }
         }
         
+        //calculate score and print turn score
         scoreCard.CalculateScore();
         _ioHandler.Print($"You have chosen {player.ChosenCategory}, your score is: {scoreCard.GetCategoryScore(player.ChosenCategory)}");
         

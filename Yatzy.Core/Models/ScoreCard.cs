@@ -21,65 +21,58 @@ public class ScoreCard : IScoreCard
 
     }
     
-
     public void CalculateScore()
     {
-        //calculate the score for the chosen category
-                int score = 0;
-                
-                //get all integers out of the current selection
-                var currentSelectedDice = Regex.Matches(_player.CurrentPlayerChoice, "([0-9]+)")
+        int score = 0;
+        var currentSelectedDice = Regex.Matches(_player.CurrentPlayerChoice, "([0-9]+)")
                     .Select(m => int.Parse(m.Value))
                     .ToList();
         
-                //calculate score
-                switch (_player.ChosenCategory)
-                {
-                    case ScoreCategory.Ones:
-                        score = GetScoreForNumber(1, currentSelectedDice);
-                        break;
-                    case ScoreCategory.Twos:
-                        score = GetScoreForNumber(2, currentSelectedDice);
-                        break;
-                    case ScoreCategory.Threes:
-                        score = GetScoreForNumber(3, currentSelectedDice);
-                        break;
-                    case ScoreCategory.Fours:
-                        score = GetScoreForNumber(4, currentSelectedDice);
-                        break;
-                    case ScoreCategory.Fives:
-                        score = GetScoreForNumber(5, currentSelectedDice);
-                        break;
-                    case ScoreCategory.Sixes:
-                        score = GetScoreForNumber(6, currentSelectedDice);
-                        break;
-                    case ScoreCategory.ThreeOfAKind:
-                        score = GetScoreForThreeOfAKind(currentSelectedDice);
-                        break;
-                    case ScoreCategory.FourOfAKind:
-                        score = GetScoreForFourOfAKind(currentSelectedDice);
-                        break;
-                    case ScoreCategory.FullHouse:
-                        score = GetScoreForFullHouse(currentSelectedDice);
-                        break;
-                    case ScoreCategory.SmallStraight:
-                        score = GetScoreForSmallStraight(currentSelectedDice);
-                        break;
-                    case ScoreCategory.LargeStraight:
-                        score = GetScoreForLargeStraight(currentSelectedDice);
-                        break;
-                    case ScoreCategory.Yatzy:
-                        score = GetScoreForYatzy(currentSelectedDice);
-                        break;
-                    case ScoreCategory.Chance:
-                        score = GetScoreForChance(currentSelectedDice);
-                        break;
-                }
-                //add score to dictionary
-                AddScore(_player.ChosenCategory, score);
-                SetTotalScore();
+        switch (_player.ChosenCategory)
+            {
+                case ScoreCategory.Ones:
+                    score = GetScoreForNumber(1, currentSelectedDice);
+                    break;
+                case ScoreCategory.Twos:
+                    score = GetScoreForNumber(2, currentSelectedDice);
+                    break;
+                case ScoreCategory.Threes:
+                    score = GetScoreForNumber(3, currentSelectedDice);
+                    break;
+                case ScoreCategory.Fours:
+                    score = GetScoreForNumber(4, currentSelectedDice);
+                    break;
+                case ScoreCategory.Fives:
+                    score = GetScoreForNumber(5, currentSelectedDice);
+                    break;
+                case ScoreCategory.Sixes:
+                    score = GetScoreForNumber(6, currentSelectedDice);
+                    break;
+                case ScoreCategory.ThreeOfAKind:
+                    score = GetScoreForThreeOfAKind(currentSelectedDice);
+                    break;
+                case ScoreCategory.FourOfAKind:
+                    score = GetScoreForFourOfAKind(currentSelectedDice);
+                    break;
+                case ScoreCategory.FullHouse:
+                    score = GetScoreForFullHouse(currentSelectedDice);
+                    break;
+                case ScoreCategory.SmallStraight:
+                    score = GetScoreForSmallStraight(currentSelectedDice);
+                    break;
+                case ScoreCategory.LargeStraight:
+                    score = GetScoreForLargeStraight(currentSelectedDice);
+                    break;
+                case ScoreCategory.Yatzy:
+                    score = GetScoreForYatzy(currentSelectedDice);
+                    break;
+                case ScoreCategory.Chance:
+                    score = GetScoreForChance(currentSelectedDice);
+                    break;
+            }
+        AddScore(_player.ChosenCategory, score);
+        SetTotalScore();
     }
-    
     
     public void AddScore(ScoreCategory category, int score)
     {
@@ -96,7 +89,6 @@ public class ScoreCard : IScoreCard
                 totalScore += score;
             }
         }
-
         TotalScore = totalScore;
     }
 
@@ -104,8 +96,7 @@ public class ScoreCard : IScoreCard
     {
         return _scores[category];
     }
-    
-        private int GetScoreForNumber(int target, List<int> currentSelectedDice)
+    private int GetScoreForNumber(int target, List<int> currentSelectedDice)
         {
             int score = 0;
             foreach (var number in currentSelectedDice)
@@ -118,7 +109,7 @@ public class ScoreCard : IScoreCard
             return score;
         }
 
-        private int GetScoreForThreeOfAKind(List<int> currentSelectedDice)
+    private int GetScoreForThreeOfAKind(List<int> currentSelectedDice)
         {
             int score = 0;
             foreach (var number in currentSelectedDice.Distinct())
@@ -129,7 +120,7 @@ public class ScoreCard : IScoreCard
             return score;
         }
 
-        private int GetScoreForFourOfAKind(List<int> currentSelectedDice)
+    private int GetScoreForFourOfAKind(List<int> currentSelectedDice)
         {
             int score = 0;
             foreach (var number in currentSelectedDice.Distinct())
@@ -140,7 +131,7 @@ public class ScoreCard : IScoreCard
             return score;
         }
 
-        private int GetScoreForFullHouse(List<int> currentSelectedDice)
+    private int GetScoreForFullHouse(List<int> currentSelectedDice)
         {
             List<int> occurrencesOfEveryNumber = new List<int>();
             foreach (var number in currentSelectedDice)
@@ -156,32 +147,31 @@ public class ScoreCard : IScoreCard
             return 0;
         }
 
-        private int GetScoreForSmallStraight(List<int> currentSelectedDice)
+    private int GetScoreForSmallStraight(List<int> currentSelectedDice)
         {
             var currentSelectedDiceValuesInARow = currentSelectedDice.OrderBy(die => die).Distinct().ToList();
             if (currentSelectedDiceValuesInARow.Count < 4) return 0;
             return 30;
         }
 
-        private int GetScoreForLargeStraight(List<int> currentSelectedDice)
+    private int GetScoreForLargeStraight(List<int> currentSelectedDice)
         {
             var currentSelectedDiceValuesInARow = currentSelectedDice.OrderBy(die => die).Distinct().ToList();
-            if (currentSelectedDiceValuesInARow.Count < 4) return 0;
+            if (currentSelectedDiceValuesInARow.Count < 5) return 0;
             return 40;
         }
 
-        private int GetScoreForYatzy(List<int> currentSelectedDice)
+    private int GetScoreForYatzy(List<int> currentSelectedDice)
         {
             foreach (var number in currentSelectedDice.Distinct())
             {
                 int count = currentSelectedDice.Count(n => n == number);
                 if (count == 5) return 50;
             }
-
             return 0;
         }
 
-        private int GetScoreForChance(List<int> currentSelectedDice)
+    private int GetScoreForChance(List<int> currentSelectedDice)
         {
             int score = 0;
             foreach (int number in currentSelectedDice)

@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using Yatzy;
+﻿using Yatzy;
 using Yatzy.Controller;
 using Yatzy.Models;
 
@@ -12,7 +10,7 @@ var dice = new Dice();
 var scoreCard1 = new ScoreCard(player1);
 var scoreCard2 = new ScoreCard(player2);
 var validator = new Validator(player1, dice);
-var turn = new Turn(consoleHandler, dice, validator);
+var turn = new Turn(consoleHandler, validator);
 var game = new Game(turn, dice, player1, player2, consoleHandler, scoreCard1, scoreCard2);
 
 game.PlayGame();

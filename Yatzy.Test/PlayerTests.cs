@@ -7,12 +7,12 @@ namespace Yatzy.Test;
 public class PlayerTests
 {
     private readonly Mock<IParser> _parserMock;
-    private readonly Mock<IIOHandler> _ioHandlerMock;
+    private readonly Mock<IInputOutputHandler> _ioHandlerMock;
 
     public PlayerTests()
     {
         _parserMock = new Mock<IParser>();
-        _ioHandlerMock = new Mock<IIOHandler>();
+        _ioHandlerMock = new Mock<IInputOutputHandler>();
     }
     
     [Fact] 

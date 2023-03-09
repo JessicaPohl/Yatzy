@@ -9,7 +9,7 @@ public class TurnTests
     private readonly Mock<IPlayer> _playerMock;
     private readonly Mock<IParser> _parserMock;
     private readonly Mock<IDice> _diceMock;
-    private readonly Mock<IIOHandler> _ioHandlerMock;
+    private readonly Mock<IInputOutputHandler> _ioHandlerMock;
     private readonly Mock<IValidator> _validatorMock;
     private readonly Mock<IScoreCard> _scoreCardMock;
 
@@ -18,7 +18,7 @@ public class TurnTests
         _playerMock = new Mock<IPlayer>();
         _parserMock = new Mock<IParser>();
         _diceMock = new Mock<IDice>();
-        _ioHandlerMock = new Mock<IIOHandler>();
+        _ioHandlerMock = new Mock<IInputOutputHandler>();
         _validatorMock = new Mock<IValidator>();
         _scoreCardMock = new Mock<IScoreCard>();
     }

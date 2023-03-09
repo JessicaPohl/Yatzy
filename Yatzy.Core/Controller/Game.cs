@@ -8,17 +8,17 @@ public class Game
     private readonly IDice _dice;
     private readonly IPlayer _player1;
     private readonly IPlayer _player2;
-    private readonly IIOHandler _ioHandler;
+    private readonly IInputOutputHandler _inputOutputHandler;
     private readonly IScoreCard _scoreCard1;
     private readonly IScoreCard _scoreCard2;
 
-    public Game(ITurn turn, IDice dice, IPlayer player1, IPlayer player2, IIOHandler ioHandler, IScoreCard scoreCard1, IScoreCard scoreCard2)
+    public Game(ITurn turn, IDice dice, IPlayer player1, IPlayer player2, IInputOutputHandler inputOutputHandler, IScoreCard scoreCard1, IScoreCard scoreCard2)
     {
         _turn = turn;
         _dice = dice;
         _player1 = player1;
         _player2 = player2;
-        _ioHandler = ioHandler;
+        _inputOutputHandler = inputOutputHandler;
         _scoreCard1 = scoreCard1;
         _scoreCard2 = scoreCard2;
     }
@@ -28,9 +28,9 @@ public class Game
         SetupGame(_player1, _player2);
         for (var i = 0; i <= 12; i++)
         { 
-            _ioHandler.Print($"{_player1.PlayerName}'s turn!");
+            _inputOutputHandler.PrintTurnAnnouncement(_player1);
             _turn.TakeTurn(_dice,_player1, _scoreCard1);
-            _ioHandler.Print($"{_player2.PlayerName}'s turn!");
+            _inputOutputHandler.PrintTurnAnnouncement(_player2);
             _turn.TakeTurn(_dice,_player2, _scoreCard2);
         }
         PrintFinalScores();
@@ -39,32 +39,32 @@ public class Game
     
     private void SetupGame(IPlayer player1, IPlayer player2)
     {
-        _ioHandler.Print("Welcome to Yatzy!");
-        _ioHandler.Print("Player 1, please enter your name: ");
-        player1.PlayerName = _ioHandler.GetUserInput();
-        _ioHandler.Print($"Welcome {player1.PlayerName}!");
-        _ioHandler.Print("Player 2, please enter your name: ");
-        player2.PlayerName = _ioHandler.GetUserInput();
-        _ioHandler.Print($"Welcome {player2.PlayerName}!");
-        _ioHandler.Print("The game begins!");
+        _inputOutputHandler.Print(Constants.Messages.Welcome);
+        _inputOutputHandler.Print(Constants.Messages.Player1NamePrompt);
+        player1.PlayerName = _inputOutputHandler.GetUserInput();
+        _inputOutputHandler.PrintCustomisedWelcome(player1);
+        _inputOutputHandler.Print(Constants.Messages.Player2NamePrompt);
+        player2.PlayerName = _inputOutputHandler.GetUserInput();
+        _inputOutputHandler.PrintCustomisedWelcome(player1);
+        _inputOutputHandler.Print(Constants.Messages.GameBegins);
     }
     
     private void PrintFinalScores()
     {
-       _ioHandler.Print($"The game is finished!");
-       _ioHandler.Print($"{_player1.PlayerName}'s total score is: {_scoreCard1.TotalScore}");
-       _ioHandler.Print($"{_player2.PlayerName}'s total score is: {_scoreCard2.TotalScore}");
+       _inputOutputHandler.Print(Constants.Messages.GameHasFinished);
+       _inputOutputHandler.PrintTotalScore(_player1, _scoreCard1);
+       _inputOutputHandler.PrintTotalScore(_player2, _scoreCard2);
     }
     
     private void DeclareWinner()
     {
         if (_scoreCard1.TotalScore > _scoreCard2.TotalScore)
         {
-            _ioHandler.Print($"{_player1.PlayerName} has won!");
+            _inputOutputHandler.PrintWinnerAnnouncement(_player1);
         } else if (_scoreCard1.TotalScore < _scoreCard2.TotalScore)
         {
-            _ioHandler.Print($"{_player2.PlayerName} has won!");
+            _inputOutputHandler.PrintWinnerAnnouncement(_player2);
         }
-        else  _ioHandler.Print($"Unbelievably you had the exact same score so you both won!");
+        else  _inputOutputHandler.Print(Constants.Messages.DrawMessage);
     }
 }

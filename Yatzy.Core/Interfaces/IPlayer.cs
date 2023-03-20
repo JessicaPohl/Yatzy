@@ -5,9 +5,9 @@ namespace Yatzy.Interfaces;
 public interface IPlayer
 {
     public string? PlayerName { get; set; }
-    public string CurrentPlayerChoice { get; set; }
+    public string? CurrentPlayerChoice { get; set; }
     public int AvailableDice { get; set; }
-    public void GetCurrentPlayerChoice();
+    public string? GetCurrentPlayerChoice();
     public void GetCurrentNumberOfDiceToReRoll();
     
     

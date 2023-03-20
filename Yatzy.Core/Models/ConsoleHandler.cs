@@ -39,7 +39,7 @@ public class ConsoleHandler : IInputOutputHandler
         Console.WriteLine(Constants.Messages.DiceRoll, player.PlayerName, dice.GetCurrentRolledDiceFormatted(CurrentDiceRoll));
     }
 
-    public void PrintCurrentDiceSelecion(IPlayer player)
+    public void PrintCurrentDiceSelection(IPlayer player)
     {
         Console.WriteLine(Constants.Messages.CurrentDiceSelection, player.CurrentPlayerChoice);
     }

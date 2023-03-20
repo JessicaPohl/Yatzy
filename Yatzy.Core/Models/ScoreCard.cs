@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Moq.Language.Flow;
 using Yatzy.Enums;
 using Yatzy.Interfaces;
 
@@ -21,7 +22,7 @@ public class ScoreCard : IScoreCard
 
     }
     
-    public void CalculateScore()
+    public int CalculateScore()
     {
         int score = 0;
         var currentSelectedDice = Regex.Matches(_player.CurrentPlayerChoice, "([0-9]+)")
@@ -72,6 +73,7 @@ public class ScoreCard : IScoreCard
             }
         AddScore(_player.ChosenCategory, score);
         SetTotalScore();
+        return score;
     }
     
     public void AddScore(ScoreCategory category, int score)

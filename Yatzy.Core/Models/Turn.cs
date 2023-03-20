@@ -29,7 +29,7 @@ public class Turn : ITurn
             player.GetCurrentPlayerChoice();
             ValidateDiceChoice(player);
             player.AddSelectedDiceToAllKeptDice(player);
-            _inputOutputHandler.PrintCurrentDiceSelecion(player);
+            _inputOutputHandler.PrintCurrentDiceSelection(player);
             player.GetCurrentNumberOfDiceToReRoll();
             NumberOfRollsLeft--;
             if (player.AvailableDice == 0)

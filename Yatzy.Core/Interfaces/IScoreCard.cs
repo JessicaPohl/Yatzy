@@ -1,3 +1,4 @@
+using Moq.Language.Flow;
 using Yatzy.Enums;
 
 namespace Yatzy.Interfaces;
@@ -8,5 +9,5 @@ public interface IScoreCard
    
     public int TotalScore { get; }
     public int GetCategoryScore(ScoreCategory category);
-    void CalculateScore();
+    public int CalculateScore();
 }

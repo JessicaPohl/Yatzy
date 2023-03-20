@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 using Yatzy.Enums;
 using Yatzy.Interfaces;
 
-namespace Yatzy;
+namespace Yatzy.Models;
 
 public class Player : IPlayer
 
@@ -13,7 +13,7 @@ public class Player : IPlayer
     private readonly IParser _parser;
     private readonly IInputOutputHandler _inputOutputHandler;
     public string? PlayerName { get; set; }
-    public string CurrentPlayerChoice { get; set; }
+    public string? CurrentPlayerChoice { get; set; }
     public int AvailableDice { get; set; }
     public int[] PreviousKeptDice { get; set; }
     
@@ -30,9 +30,10 @@ public class Player : IPlayer
     }
 
 
-    public void GetCurrentPlayerChoice() 
+    public string? GetCurrentPlayerChoice() 
     {
         CurrentPlayerChoice = _inputOutputHandler.GetUserInput();
+        return CurrentPlayerChoice;
     }
 
     public void GetCurrentNumberOfDiceToReRoll() 
@@ -42,8 +43,7 @@ public class Player : IPlayer
     
     public void AddSelectedDiceToAllKeptDice(IPlayer player)
     {
-        PreviousKeptDice = (Regex.Matches(player.CurrentPlayerChoice, "([0-9]+)").OfType<Match>()
-            .Select(m => int.Parse(m.Value)).ToArray());
+        PreviousKeptDice = (Regex.Matches(player.CurrentPlayerChoice, "([0-9]+)").Select(m => int.Parse(m.Value)).ToArray());
     }
 
 }

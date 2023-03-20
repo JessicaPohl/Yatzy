@@ -56,7 +56,7 @@ public class Game
        _inputOutputHandler.PrintTotalScore(_player2, _scoreCard2);
     }
     
-    private void DeclareWinner()
+    public void DeclareWinner()
     {
         if (_scoreCard1.TotalScore > _scoreCard2.TotalScore)
         {

@@ -36,16 +36,16 @@ public class ValidatorTests
     }
     
     [Theory]
-    // [InlineData("5,5,5,5,5", "5,5,5,5,5", true)]
-    // [InlineData("4,4,4,4,4", "4,4,4,4,4", true)]
-    // [InlineData("5,5,4,4,3", "5,5,4,4,3", true)]
-    // [InlineData("5,5,4,4,3", "4,5,4,3,5", true)]
-    // [InlineData("1,2,3,-,-", "1,2,3,-,-", true)]
-    // [InlineData("1,2,3,-,-", "-,-,1,2,3", true)]
-    // [InlineData("5,5,5,5,5", "4,4,4,4,4", false)]
-    // [InlineData("4,4,4,4,4", "3,3,3,3,3", false)]
-    // [InlineData("5,5,4,4,3", "2,2,1,1,1", false)]
-    // [InlineData("1,2,-,-,-", "3,4,-,-,-", false)] //
+    [InlineData("5,5,5,5,5", "5,5,5,5,5", true)]
+    [InlineData("4,4,4,4,4", "4,4,4,4,4", true)]
+    [InlineData("5,5,4,4,3", "5,5,4,4,3", true)]
+    [InlineData("5,5,4,4,3", "4,5,4,3,5", true)]
+    [InlineData("1,2,3,-,-", "1,2,3,-,-", true)]
+    [InlineData("1,2,3,-,-", "-,-,1,2,3", true)]
+    [InlineData("5,5,5,5,5", "4,4,4,4,4", false)]
+    [InlineData("4,4,4,4,4", "3,3,3,3,3", false)]
+    [InlineData("5,5,4,4,3", "2,2,1,1,1", false)]
+    [InlineData("1,2,-,-,-", "3,4,-,-,-", false)]
     [InlineData("1,2,3,-,-", "-,-,4,4,5", false)]
     public void WhenPlayerChoosesDiceTheyHaveNotCurrentlyRolled_ReturnsFalse(string currentRolledDice, string currentPlayerChoice, bool expectedValidatorResult)
     {
@@ -58,27 +58,4 @@ public class ValidatorTests
         //assert
         Assert.Equal(expectedValidatorResult, actualValidatorResult);
     }
-    
-    // [Fact]
-    // public void WhenPlayerSelectsDiceToKeepAfterSecondRoll_DiceKeptFromTheFirstRollAreTakenIntoAccount()
-    // {
-    //     //arrange
-    //     _playerMock.SetupGet(x => x.AvailableDice).Returns(3);
-    //     _playerMock.SetupGet(x => x.PlayerName).Returns(It.IsAny<string>);
-    //
-    //     _playerMock.SetupGet(x => x.PreviousKeptDice).Returns(new int[] { 2, 2 });
-    //     _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns("4,4,-,-,-");
-    //
-    //     _diceMock.Setup(x=> x.RollDice(5)).Returns( new[] {4,4,1,2,5});
-    //     _diceMock.Setup(x=> x.GetCurrentRolledDiceFormatted(new[] {4,4,1,2,5})).Returns( "4,4,1,2,5");
-    //     _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns("2,2,4,4,-");
-    //     
-    //     //act
-    //     var validator = new Validator(_playerMock.Object, _diceMock.Object);
-    //     var actualValidatorResult = validator.IsValidChoice();
-    //     var expectedValidatorResult = true;
-    //     //assert
-    //     Assert.Equal(expectedValidatorResult, actualValidatorResult);
-    // }
-    
 }

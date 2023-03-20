@@ -15,7 +15,7 @@ public interface IInputOutputHandler
 
     public void PrintCurrentDiceRoll(IPlayer player, IDice dice, int[]CurrentDiceRoll);
 
-    public void PrintCurrentDiceSelecion(IPlayer player);
+    public void PrintCurrentDiceSelection(IPlayer player);
 
     public void PrintHowManyDicePickedForReRoll(IPlayer player);
 

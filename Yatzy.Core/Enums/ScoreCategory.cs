@@ -1,5 +1,3 @@
-using System.Reflection.Metadata;
-
 namespace Yatzy.Enums;
 
 public enum ScoreCategory

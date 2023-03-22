@@ -23,7 +23,7 @@ public class TurnTests
     }
 
     [Fact]
-    public void TurnWithValidDiceChoiceAndThreeDiceRolls_CallsTurnMethodsExpectedNumberOfTimes()
+    public void TurnWithThreeDiceRolls_CallsTurnMethodsExpectedNumberOfTimes()
     {
         //arrange
         _playerMock.SetupProperty(x => x.AvailableDice, 5);
@@ -32,12 +32,8 @@ public class TurnTests
             .Returns(new[] {2, 4, 1, 3, 4})
             .Returns(new[] {1, 1, 1, 1, 1});
         _inputOutputHandlerMock.SetupSequence(x => x.GetUserInput())
-            .Returns("-,-,-,-,-")
-            .Returns("-,-,-,-,-")
-            .Returns("1, 1, 1, 1, 1");
-        _validatorMock.SetupSequence(x => x.IsValidChoice())
-            .Returns(true)
-            .Returns(true)
+            .Returns("0");
+        _validatorMock.Setup(x => x.IsValidChoice())
             .Returns(true);
         _playerMock.SetupSequence(x => x.GetCurrentPlayerChoice())
             .Returns("-,-,-,-,-")

@@ -12,7 +12,8 @@ public class Game
     private readonly IScoreCard _scoreCard1;
     private readonly IScoreCard _scoreCard2;
 
-    public Game(ITurn turn, IDice dice, IPlayer player1, IPlayer player2, IInputOutputHandler inputOutputHandler, IScoreCard scoreCard1, IScoreCard scoreCard2)
+    public Game(ITurn turn, IDice dice, IPlayer player1, IPlayer player2, IInputOutputHandler inputOutputHandler,
+        IScoreCard scoreCard1, IScoreCard scoreCard2)
     {
         _turn = turn;
         _dice = dice;
@@ -22,21 +23,22 @@ public class Game
         _scoreCard1 = scoreCard1;
         _scoreCard2 = scoreCard2;
     }
-    
+
     public void PlayGame()
     {
         SetupGame(_player1, _player2);
         for (var i = 0; i <= 12; i++)
-        { 
+        {
             _inputOutputHandler.PrintTurnAnnouncement(_player1);
-            _turn.TakeTurn(_dice,_player1, _scoreCard1);
+            _turn.TakeTurn(_dice, _player1, _scoreCard1);
             _inputOutputHandler.PrintTurnAnnouncement(_player2);
-            _turn.TakeTurn(_dice,_player2, _scoreCard2);
+            _turn.TakeTurn(_dice, _player2, _scoreCard2);
         }
+
         PrintFinalScores();
         DeclareWinner();
     }
-    
+
     private void SetupGame(IPlayer player1, IPlayer player2)
     {
         _inputOutputHandler.Print(Constants.Messages.Welcome);
@@ -48,23 +50,25 @@ public class Game
         _inputOutputHandler.PrintCustomisedWelcome(player1);
         _inputOutputHandler.Print(Constants.Messages.GameBegins);
     }
-    
+
     private void PrintFinalScores()
     {
-       _inputOutputHandler.Print(Constants.Messages.GameHasFinished);
-       _inputOutputHandler.PrintTotalScore(_player1, _scoreCard1);
-       _inputOutputHandler.PrintTotalScore(_player2, _scoreCard2);
+        _inputOutputHandler.Print(Constants.Messages.GameHasFinished);
+        _inputOutputHandler.PrintTotalScore(_player1, _scoreCard1);
+        _inputOutputHandler.PrintTotalScore(_player2, _scoreCard2);
     }
-    
-    public void DeclareWinner()
+
+    private void DeclareWinner()
     {
         if (_scoreCard1.TotalScore > _scoreCard2.TotalScore)
         {
             _inputOutputHandler.PrintWinnerAnnouncement(_player1);
-        } else if (_scoreCard1.TotalScore < _scoreCard2.TotalScore)
+        }
+        else if (_scoreCard1.TotalScore < _scoreCard2.TotalScore)
         {
             _inputOutputHandler.PrintWinnerAnnouncement(_player2);
         }
-        else  _inputOutputHandler.Print(Constants.Messages.DrawMessage);
+        else
+            _inputOutputHandler.Print(Constants.Messages.DrawMessage);
     }
 }

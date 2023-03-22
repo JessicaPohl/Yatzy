@@ -28,15 +28,16 @@ public class ConsoleHandler : IInputOutputHandler
     {
         Console.WriteLine(Constants.Messages.NextTurn, player.PlayerName);
     }
-    
+
     public void PrintWinnerAnnouncement(IPlayer player)
     {
         Console.WriteLine(Constants.Messages.Winner, player.PlayerName);
     }
 
-    public void PrintCurrentDiceRoll(IPlayer player, IDice dice, int[]CurrentDiceRoll)
+    public void PrintCurrentDiceRoll(IPlayer player, IDice dice, int[] currentDiceRoll)
     {
-        Console.WriteLine(Constants.Messages.DiceRoll, player.PlayerName, dice.GetCurrentRolledDiceFormatted(CurrentDiceRoll));
+        Console.WriteLine(Constants.Messages.DiceRoll, player.PlayerName,
+            dice.GetCurrentRolledDiceFormatted(currentDiceRoll));
     }
 
     public void PrintCurrentDiceSelection(IPlayer player)
@@ -51,6 +52,7 @@ public class ConsoleHandler : IInputOutputHandler
 
     public void PrintCategoryScore(IPlayer player, IScoreCard scoreCard)
     {
-        Console.WriteLine(Constants.Messages.PlayerCategoryScore, player.ChosenCategory, scoreCard.GetCategoryScore(player.ChosenCategory));
+        Console.WriteLine(Constants.Messages.PlayerCategoryScore, player.ChosenCategory,
+            scoreCard.GetCategoryScore(player.ChosenCategory));
     }
 }

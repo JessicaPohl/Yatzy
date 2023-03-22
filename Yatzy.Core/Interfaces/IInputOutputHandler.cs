@@ -13,7 +13,7 @@ public interface IInputOutputHandler
 
     public void PrintWinnerAnnouncement(IPlayer player);
 
-    public void PrintCurrentDiceRoll(IPlayer player, IDice dice, int[]CurrentDiceRoll);
+    public void PrintCurrentDiceRoll(IPlayer player, IDice dice, int[] currentDiceRoll);
 
     public void PrintCurrentDiceSelection(IPlayer player);
 

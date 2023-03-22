@@ -11,15 +11,16 @@ public class Parser : IParser
         {
             if (diceValue == '-') numberOfDiceToReRoll++;
         }
+
         return numberOfDiceToReRoll;
     }
-    
+
     public string[] ConvertUserInputIntoCurrentPlayerSelection(string? userInput)
     {
         var splitUserInput = userInput.Split(",");
-        
+
         List<string> list = new List<string>();
-        
+
         foreach (string diceValue in splitUserInput)
         {
             list.Add(diceValue);

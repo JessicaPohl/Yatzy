@@ -10,6 +10,7 @@ public class Turn : ITurn
     private readonly int _numberOfRollsLeftAtTheStart = 3;
     public int[] CurrentDiceRoll { get; set; }
     public int NumberOfRollsLeft { get; set; }
+
     public Turn(IInputOutputHandler inputOutputHandler, IValidator validator)
     {
         _inputOutputHandler = inputOutputHandler;
@@ -17,10 +18,11 @@ public class Turn : ITurn
         NumberOfRollsLeft = _numberOfRollsLeftAtTheStart;
         CurrentDiceRoll = new int[5];
     }
+
     public void TakeTurn(IDice dice, IPlayer player, IScoreCard scoreCard)
     {
         player.AvailableDice = 5;
-        
+
         while (NumberOfRollsLeft > 0)
         {
             CurrentDiceRoll = dice.RollDice(player.AvailableDice);
@@ -37,13 +39,14 @@ public class Turn : ITurn
                 NumberOfRollsLeft = 0;
                 break;
             }
+
             _inputOutputHandler.PrintHowManyDicePickedForReRoll(player);
         }
-        
+
         _inputOutputHandler.Print(Constants.Messages.ScoreCategoryPrompt);
         PrintAvailableScoreCategories(scoreCard);
         GetValidCategoryChoice(player, scoreCard);
-        
+
         scoreCard.CalculateScore();
         _inputOutputHandler.PrintCategoryScore(player, scoreCard);
         NumberOfRollsLeft = 3;
@@ -68,14 +71,16 @@ public class Turn : ITurn
             }
         }
     }
+
     private void GetValidCategoryChoice(IPlayer player, IScoreCard scoreCard)
     {
-        while (true)
+        do
         {
-            if (int.TryParse(_inputOutputHandler.GetUserInput(), out var categoryInt) &&
-                Enum.IsDefined(typeof(ScoreCategory), categoryInt))
+            if (int.TryParse(_inputOutputHandler.GetUserInput(), out var categoryChoice) &&
+                Enum.IsDefined(typeof(ScoreCategory), categoryChoice))
             {
-                player.ChosenCategory = (ScoreCategory)categoryInt;
+                player.ChosenCategory = (ScoreCategory)categoryChoice;
+
                 if (scoreCard.GetCategoryScore(player.ChosenCategory) == -1)
                 {
                     break;
@@ -89,7 +94,6 @@ public class Turn : ITurn
             {
                 _inputOutputHandler.Print(Constants.Messages.InvalidCategory);
             }
-        }
+        } while (scoreCard.GetCategoryScore(player.ChosenCategory) == -1);
     }
-
 }

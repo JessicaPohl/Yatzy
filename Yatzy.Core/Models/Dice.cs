@@ -4,10 +4,9 @@ namespace Yatzy.Models;
 
 public class Dice : IDice
 {
-  
     private readonly Random _random = new Random();
     public int[] CurrentRolledDice { get; set; }
-    
+
     public int RollDie()
     {
         return _random.Next(1, 7);
@@ -32,8 +31,9 @@ public class Dice : IDice
         {
             currentRolledDiceList.Add(die.ToString());
         }
+
         string currentRolledDiceOutput = string.Join(",", currentRolledDiceList);
-        
+
         return currentRolledDiceOutput;
     }
 }

@@ -13,7 +13,7 @@ public static class Messages
     public const string ScoreCategoryPrompt = "How do you want to score your dice at the end of this turn? Enter the number of the category you want to score this turn as:  ";
     public const string InvalidInput = "Your input was invalid, please try again: ";
     public const string CategoryAlreadyScored = "You have already scored that category. Pick another category to score.";
-    public const string InvalidCategory = "Invalid input. Choose a category by entering the corresponding number";
+    public const string InvalidCategory = "Invalid input. Choose a category by entering the corresponding number.";
     public const string DiceRoll = "{0} rolled... {1}";
     public const string PlayerCategoryScore = "You have chosen {0}, your score is: {1}";
     public const string GameHasFinished = "The game is finished!";

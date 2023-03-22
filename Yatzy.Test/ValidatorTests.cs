@@ -30,7 +30,7 @@ public class ValidatorTests
         _diceMock.Setup(x => x.GetCurrentRolledDiceFormatted(It.IsAny<int[]>())).Returns("5,5,5,5,5");
         //act
         var validator = new Validator(_playerMock.Object, _diceMock.Object);
-        var actualValidatorResult = validator.IsValidChoice();
+        var actualValidatorResult = validator.IsValidDiceChoice();
         //assert
         Assert.Equal(expectedValidatorResult, actualValidatorResult);
     }
@@ -54,7 +54,7 @@ public class ValidatorTests
         _diceMock.Setup(x => x.GetCurrentRolledDiceFormatted(It.IsAny<int[]>())).Returns(currentRolledDice);
         //act
         var validator = new Validator(_playerMock.Object, _diceMock.Object);
-        var actualValidatorResult = validator.IsValidChoice();
+        var actualValidatorResult = validator.IsValidDiceChoice();
         //assert
         Assert.Equal(expectedValidatorResult, actualValidatorResult);
     }

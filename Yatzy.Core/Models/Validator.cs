@@ -14,7 +14,7 @@ public class Validator : IValidator
         _dice = dice;
     }
 
-    public bool IsValidChoice()
+    public bool IsValidDiceChoice()
     {
         string regex = @"^(-|\d),(-|\d),(-|\d),(-|\d),(-|\d)$";
         var currentPlayerChoice = _player.CurrentPlayerChoice;

@@ -54,7 +54,7 @@ public class Turn : ITurn
 
     private void ValidateDiceChoice(IPlayer player)
     {
-        while (_validator.IsValidChoice() == false)
+        while (_validator.IsValidDiceChoice() == false)
         {
             _inputOutputHandler.Print(Constants.Messages.InvalidInput);
             player.GetCurrentPlayerChoice();
@@ -74,26 +74,20 @@ public class Turn : ITurn
 
     private void GetValidCategoryChoice(IPlayer player, IScoreCard scoreCard)
     {
-        do
+        int.TryParse(_inputOutputHandler.GetUserInput(), out var categoryChoice);
+        
+        while (!Enum.IsDefined(typeof(ScoreCategory), categoryChoice))
         {
-            if (int.TryParse(_inputOutputHandler.GetUserInput(), out var categoryChoice) &&
-                Enum.IsDefined(typeof(ScoreCategory), categoryChoice))
-            {
-                player.ChosenCategory = (ScoreCategory)categoryChoice;
+            _inputOutputHandler.Print(Constants.Messages.InvalidCategory);
 
-                if (scoreCard.GetCategoryScore(player.ChosenCategory) == -1)
-                {
-                    break;
-                }
-
-                {
-                    _inputOutputHandler.Print(Constants.Messages.CategoryAlreadyScored);
-                }
-            }
-            else
+            if (scoreCard.GetCategoryScore(player.ChosenCategory) == -1)
             {
-                _inputOutputHandler.Print(Constants.Messages.InvalidCategory);
+                break;
             }
-        } while (scoreCard.GetCategoryScore(player.ChosenCategory) == -1);
+            {
+                _inputOutputHandler.Print(Constants.Messages.CategoryAlreadyScored);
+            }
+        }
+        player.ChosenCategory = (ScoreCategory)categoryChoice;
     }
 }

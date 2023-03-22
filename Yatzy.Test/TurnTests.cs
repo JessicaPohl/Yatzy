@@ -33,7 +33,7 @@ public class TurnTests
             .Returns(new[] {1, 1, 1, 1, 1});
         _inputOutputHandlerMock.SetupSequence(x => x.GetUserInput())
             .Returns("0");
-        _validatorMock.Setup(x => x.IsValidChoice())
+        _validatorMock.Setup(x => x.IsValidDiceChoice())
             .Returns(true);
         _playerMock.SetupSequence(x => x.GetCurrentPlayerChoice())
             .Returns("-,-,-,-,-")

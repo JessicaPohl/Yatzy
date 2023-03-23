@@ -1,3 +1,5 @@
+using Yatzy.Models;
+
 namespace Yatzy.Test;
 
 public class ParserTests

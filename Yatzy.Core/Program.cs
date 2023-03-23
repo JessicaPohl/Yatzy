@@ -1,5 +1,4 @@
-﻿using Yatzy;
-using Yatzy.Controller;
+﻿using Yatzy.Controller;
 using Yatzy.Models;
 
 var parser = new Parser();

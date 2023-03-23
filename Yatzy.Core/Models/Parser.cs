@@ -1,6 +1,6 @@
 using Yatzy.Interfaces;
 
-namespace Yatzy;
+namespace Yatzy.Models;
 
 public class Parser : IParser
 {

@@ -47,7 +47,7 @@ public class Game
         _inputOutputHandler.PrintCustomisedWelcome(player1);
         _inputOutputHandler.Print(Constants.Messages.Player2NamePrompt);
         player2.PlayerName = _inputOutputHandler.GetUserInput();
-        _inputOutputHandler.PrintCustomisedWelcome(player1);
+        _inputOutputHandler.PrintCustomisedWelcome(player2);
         _inputOutputHandler.Print(Constants.Messages.GameBegins);
     }
 

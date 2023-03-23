@@ -43,8 +43,9 @@ public class Turn : ITurn
             _inputOutputHandler.PrintHowManyDicePickedForReRoll(player);
         }
 
-        _inputOutputHandler.Print(Constants.Messages.ScoreCategoryPrompt);
+        _inputOutputHandler.Print(Constants.Messages.ScoreCategoryInstruction);
         PrintAvailableScoreCategories(scoreCard);
+        _inputOutputHandler.Print(Constants.Messages.ScoreCategoryPrompt);
         GetValidCategoryChoice(player, scoreCard);
 
         scoreCard.CalculateScore();

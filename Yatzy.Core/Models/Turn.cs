@@ -1,59 +1,94 @@
+using Yatzy.Enums;
 using Yatzy.Interfaces;
 
 namespace Yatzy.Models;
 
-public class Turn
+public class Turn : ITurn
 {
+    private readonly IInputOutputHandler _inputOutputHandler;
+    private readonly IValidator _validator;
     private readonly int _numberOfRollsLeftAtTheStart = 3;
-    private readonly int _numberOfAvailableDiceAtTheStart = 5;
-    private readonly IPlayerChoice _playerChoice;
-    private readonly IParser _parser;
-    private readonly IIOHandler _ioHandler;
-    public int AvailableDice { get; set; }
+    public int[] CurrentDiceRoll { get; set; }
     public int NumberOfRollsLeft { get; set; }
 
-    public Turn(IPlayerChoice playerChoice, IParser parser, IIOHandler ioHandler)
+    public Turn(IInputOutputHandler inputOutputHandler, IValidator validator)
     {
+        _inputOutputHandler = inputOutputHandler;
+        _validator = validator;
         NumberOfRollsLeft = _numberOfRollsLeftAtTheStart;
-        AvailableDice = _numberOfAvailableDiceAtTheStart;
-        _playerChoice = playerChoice;
-        _parser = parser;
-        _ioHandler = ioHandler;
+        CurrentDiceRoll = new int[5];
     }
-    
-    public string? CurrentPlayerSelectionOutput { get; set; }
-    public int GetNumberOfRollsLeft()
-    {
-        return NumberOfRollsLeft;
-    }
-    public void TakeTurn(IDice dice)
-    {
-        //initial roll of all 5 dice
-        dice.RollDice(5);
-        NumberOfRollsLeft--;
 
-        //re-roll and select dice to keep loop
+    public void TakeTurn(IDice dice, IPlayer player, IScoreCard scoreCard)
+    {
+        player.AvailableDice = 5;
+
         while (NumberOfRollsLeft > 0)
         {
-            //player to select dice to keep
-            var currentPlayerInput = _playerChoice.GetCurrentPlayerChoice();
-            //save current player input as an array of int to calculate score at the end of the roll/turn
-            string []currentPlayerSelection = _parser.ConvertUserInputIntoCurrentPlayerSelection(currentPlayerInput);
-            CurrentPlayerSelectionOutput = currentPlayerSelection.ToString();
-            //calculate dice to re-roll based on last input
-            var availableDice = _parser.ConvertUserInputIntoNumberOfDiceToReRoll(currentPlayerInput);
-            //reroll available dice
-            if (NumberOfRollsLeft > 0)
+            CurrentDiceRoll = dice.RollDice(player.AvailableDice);
+            _inputOutputHandler.PrintCurrentDiceRoll(player, dice, CurrentDiceRoll);
+            _inputOutputHandler.Print(Constants.Messages.DiceSelectionPrompt);
+            player.GetCurrentPlayerChoice();
+            ValidateDiceChoice(player);
+            player.AddSelectedDiceToAllKeptDice(player);
+            _inputOutputHandler.PrintCurrentDiceSelection(player);
+            player.GetCurrentNumberOfDiceToReRoll();
+            NumberOfRollsLeft--;
+            if (player.AvailableDice == 0)
             {
-                dice.RollDice(availableDice);
-                NumberOfRollsLeft--;
+                NumberOfRollsLeft = 0;
+                break;
             }
-        } //all 3 rolls done
-        
-        //scoring
-        // output currentSelection
-        _ioHandler.Print($"Your current selection is {CurrentPlayerSelectionOutput}");
-        _ioHandler.Print("Which category do you want to score this turn in?");
 
+            _inputOutputHandler.PrintHowManyDicePickedForReRoll(player);
+        }
+
+        _inputOutputHandler.Print(Constants.Messages.ScoreCategoryInstruction);
+        PrintAvailableScoreCategories(scoreCard);
+        _inputOutputHandler.Print(Constants.Messages.ScoreCategoryPrompt);
+        GetValidCategoryChoice(player, scoreCard);
+
+        scoreCard.CalculateScore();
+        _inputOutputHandler.PrintCategoryScore(player, scoreCard);
+        NumberOfRollsLeft = 3;
+    }
+
+    private void ValidateDiceChoice(IPlayer player)
+    {
+        while (_validator.IsValidDiceChoice() == false)
+        {
+            _inputOutputHandler.Print(Constants.Messages.InvalidInput);
+            player.GetCurrentPlayerChoice();
+        }
+    }
+
+    private void PrintAvailableScoreCategories(IScoreCard scoreCard)
+    {
+        foreach (ScoreCategory category in Enum.GetValues((typeof(ScoreCategory))))
+        {
+            if (scoreCard.GetCategoryScore(category) == -1)
+            {
+                _inputOutputHandler.Print($"{(int)category}: {category.ToString()}");
+            }
+        }
+    }
+
+    private void GetValidCategoryChoice(IPlayer player, IScoreCard scoreCard)
+    {
+        int.TryParse(_inputOutputHandler.GetUserInput(), out var categoryChoice);
+        
+        while (!Enum.IsDefined(typeof(ScoreCategory), categoryChoice))
+        {
+            _inputOutputHandler.Print(Constants.Messages.InvalidCategory);
+
+            if (scoreCard.GetCategoryScore(player.ChosenCategory) == -1)
+            {
+                break;
+            }
+            {
+                _inputOutputHandler.Print(Constants.Messages.CategoryAlreadyScored);
+            }
+        }
+        player.ChosenCategory = (ScoreCategory)categoryChoice;
     }
 }

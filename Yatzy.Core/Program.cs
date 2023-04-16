@@ -1,5 +1,5 @@
 ﻿using Yatzy.Controller;
-using Yatzy.Models;
+using Yatzy.Services;
 
 var parser = new Parser();
 var consoleHandler = new ConsoleHandler();

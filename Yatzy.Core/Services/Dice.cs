@@ -1,6 +1,6 @@
 using Yatzy.Interfaces;
 
-namespace Yatzy.Models;
+namespace Yatzy.Services;
 
 public class Dice : IDice
 {

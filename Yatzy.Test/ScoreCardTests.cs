@@ -1,7 +1,7 @@
 using Moq;
 using Yatzy.Enums;
 using Yatzy.Interfaces;
-using Yatzy.Models;
+using Yatzy.Services;
 
 namespace Yatzy.Test;
 

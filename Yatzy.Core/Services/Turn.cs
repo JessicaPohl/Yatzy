@@ -1,7 +1,7 @@
 using Yatzy.Enums;
 using Yatzy.Interfaces;
 
-namespace Yatzy.Models;
+namespace Yatzy.Services;
 
 public class Turn : ITurn
 {

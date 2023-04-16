@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using Yatzy.Interfaces;
 
-namespace Yatzy.Models;
+namespace Yatzy.Services;
 
 public class Validator : IValidator
 {

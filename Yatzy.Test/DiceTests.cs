@@ -1,4 +1,4 @@
-using Yatzy.Models;
+using Yatzy.Services;
 
 namespace Yatzy.Test;
 

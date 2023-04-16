@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 using Yatzy.Enums;
 using Yatzy.Interfaces;
 
-namespace Yatzy.Models;
+namespace Yatzy.Services;
 
 public class Player : IPlayer
 

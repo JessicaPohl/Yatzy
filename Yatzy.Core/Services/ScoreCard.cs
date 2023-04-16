@@ -168,12 +168,7 @@ public class ScoreCard : IScoreCard
     }
 
     private int GetScoreForChance(List<int> currentSelectedDice)
-        {
-            int score = 0;
-            foreach (int number in currentSelectedDice)
-            {
-                score += number;
-            }
-            return score;
-        }
+    {
+        return currentSelectedDice.Sum();
+    }
 }

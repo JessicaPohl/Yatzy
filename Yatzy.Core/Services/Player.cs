@@ -11,7 +11,8 @@ public class Player : IPlayer
     private readonly int _numberOfAvailableDiceAtTheStart = 5;
     private readonly string? _currentPlayerChoice = "";
     private readonly IParser _parser;
-    private readonly IInputOutputHandler _inputOutputHandler;
+    private readonly IReader _reader;
+    private readonly IWriter _writer;
     public string? PlayerName { get; set; }
     public string? CurrentPlayerChoice { get; set; }
     public int AvailableDice { get; set; }
@@ -19,10 +20,11 @@ public class Player : IPlayer
 
     public ScoreCategory ChosenCategory { get; set; }
 
-    public Player(IParser parser, IInputOutputHandler inputOutputHandler)
+    public Player(IParser parser, IReader reader, IWriter writer)
     {
         _parser = parser;
-        _inputOutputHandler = inputOutputHandler;
+        _reader = reader;
+        _writer = writer;
         CurrentPlayerChoice = _currentPlayerChoice;
         PlayerName = _playerName;
         AvailableDice = _numberOfAvailableDiceAtTheStart;
@@ -32,7 +34,7 @@ public class Player : IPlayer
 
     public string? GetCurrentPlayerChoice()
     {
-        CurrentPlayerChoice = _inputOutputHandler.GetUserInput();
+        CurrentPlayerChoice = _reader.GetUserInput();
         return CurrentPlayerChoice;
     }
 

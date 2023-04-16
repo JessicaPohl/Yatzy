@@ -5,15 +5,17 @@ namespace Yatzy.Services;
 
 public class Turn : ITurn
 {
-    private readonly IInputOutputHandler _inputOutputHandler;
+    private readonly IReader _reader;
+    private readonly IWriter _writer;
     private readonly IValidator _validator;
     private readonly int _numberOfRollsLeftAtTheStart = 3;
     public int[] CurrentDiceRoll { get; set; }
     public int NumberOfRollsLeft { get; set; }
 
-    public Turn(IInputOutputHandler inputOutputHandler, IValidator validator)
+    public Turn(IReader reader, IWriter writer, IValidator validator)
     {
-        _inputOutputHandler = inputOutputHandler;
+        _reader = reader;
+        _writer = writer;
         _validator = validator;
         NumberOfRollsLeft = _numberOfRollsLeftAtTheStart;
         CurrentDiceRoll = new int[5];
@@ -26,12 +28,12 @@ public class Turn : ITurn
         while (NumberOfRollsLeft > 0)
         {
             CurrentDiceRoll = dice.RollDice(player.AvailableDice);
-            _inputOutputHandler.PrintCurrentDiceRoll(player, dice, CurrentDiceRoll);
-            _inputOutputHandler.Print(Constants.Messages.DiceSelectionPrompt);
+            _writer.PrintCurrentDiceRoll(player, dice, CurrentDiceRoll);
+            _writer.Print(Constants.Messages.DiceSelectionPrompt);
             player.GetCurrentPlayerChoice();
             ValidateDiceChoice(player);
             player.AddSelectedDiceToAllKeptDice(player);
-            _inputOutputHandler.PrintCurrentDiceSelection(player);
+            _writer.PrintCurrentDiceSelection(player);
             player.GetCurrentNumberOfDiceToReRoll();
             NumberOfRollsLeft--;
             if (player.AvailableDice == 0)
@@ -40,16 +42,16 @@ public class Turn : ITurn
                 break;
             }
 
-            _inputOutputHandler.PrintHowManyDicePickedForReRoll(player);
+            _writer.PrintHowManyDicePickedForReRoll(player);
         }
 
-        _inputOutputHandler.Print(Constants.Messages.ScoreCategoryInstruction);
+        _writer.Print(Constants.Messages.ScoreCategoryInstruction);
         PrintAvailableScoreCategories(scoreCard);
-        _inputOutputHandler.Print(Constants.Messages.ScoreCategoryPrompt);
+        _writer.Print(Constants.Messages.ScoreCategoryPrompt);
         GetValidCategoryChoice(player, scoreCard);
 
         scoreCard.CalculateScore();
-        _inputOutputHandler.PrintCategoryScore(player, scoreCard);
+        _writer.PrintCategoryScore(player, scoreCard);
         NumberOfRollsLeft = 3;
     }
 
@@ -57,7 +59,7 @@ public class Turn : ITurn
     {
         while (_validator.IsValidDiceChoice() == false)
         {
-            _inputOutputHandler.Print(Constants.Messages.InvalidInput);
+            _writer.Print(Constants.Messages.InvalidInput);
             player.GetCurrentPlayerChoice();
         }
     }
@@ -68,25 +70,25 @@ public class Turn : ITurn
         {
             if (scoreCard.GetCategoryScore(category) == -1)
             {
-                _inputOutputHandler.Print($"{(int)category}: {category.ToString()}");
+                _writer.Print($"{(int)category}: {category.ToString()}");
             }
         }
     }
 
     private void GetValidCategoryChoice(IPlayer player, IScoreCard scoreCard)
     {
-        int.TryParse(_inputOutputHandler.GetUserInput(), out var categoryChoice);
+        int.TryParse(_reader.GetUserInput(), out var categoryChoice);
         
         while (!Enum.IsDefined(typeof(ScoreCategory), categoryChoice))
         {
-            _inputOutputHandler.Print(Constants.Messages.InvalidCategory);
+            _writer.Print(Constants.Messages.InvalidCategory);
 
             if (scoreCard.GetCategoryScore(player.ChosenCategory) == -1)
             {
                 break;
             }
             {
-                _inputOutputHandler.Print(Constants.Messages.CategoryAlreadyScored);
+                _writer.Print(Constants.Messages.CategoryAlreadyScored);
             }
         }
         player.ChosenCategory = (ScoreCategory)categoryChoice;

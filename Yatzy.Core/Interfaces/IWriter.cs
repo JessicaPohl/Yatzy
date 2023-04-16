@@ -1,8 +1,7 @@
 namespace Yatzy.Interfaces;
 
-public interface IInputOutputHandler
+public interface IWriter
 {
-    public string? GetUserInput();
     public void Print(string message);
 
     public void PrintCustomisedWelcome(IPlayer player);

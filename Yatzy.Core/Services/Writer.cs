@@ -2,13 +2,8 @@ using Yatzy.Interfaces;
 
 namespace Yatzy.Services;
 
-public class ConsoleHandler : IInputOutputHandler
+public class Writer : IWriter
 {
-    public string? GetUserInput()
-    {
-        return Console.ReadLine();
-    }
-
     public void Print(string message)
     {
         Console.WriteLine(message);

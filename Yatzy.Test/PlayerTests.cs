@@ -7,21 +7,23 @@ namespace Yatzy.Test;
 public class PlayerTests
 {
     private readonly Mock<IParser> _parserMock;
-    private readonly Mock<IInputOutputHandler> _ioHandlerMock;
+    private readonly Mock<IReader> _readerMock;
+    private readonly Mock<IWriter> _writerMock;
 
     public PlayerTests()
     {
         _parserMock = new Mock<IParser>();
-        _ioHandlerMock = new Mock<IInputOutputHandler>();
+        _readerMock = new Mock<IReader>();
+        _writerMock = new Mock<IWriter>();
     }
     
     [Fact] 
     public void WhenGetCurrentPlayerChoice_PlayerDiceChoiceIsStoredAsCurrentChoice()
     {
         //arrange
-        var player = new Player(_parserMock.Object, _ioHandlerMock.Object);
+        var player = new Player(_parserMock.Object, _readerMock.Object, _writerMock.Object);
         //act
-        _ioHandlerMock.Setup(x => x.GetUserInput()).Returns("5,5,5,5,-");
+        _readerMock.Setup(x => x.GetUserInput()).Returns("5,5,5,5,-");
         player.GetCurrentPlayerChoice();
         var actualCurrentPlayerChoice = player.CurrentPlayerChoice;
         var expectedCurrentPlayerChoice = "5,5,5,5,-";
@@ -33,9 +35,9 @@ public class PlayerTests
     public void WhenGetCurrentNumberOfDiceToReRoll_CorrectNumberOfDiceToReRollIsStoredAsAvailableDice()
     {
         //arrange
-        var player = new Player(_parserMock.Object, _ioHandlerMock.Object);
+        var player = new Player(_parserMock.Object, _readerMock.Object, _writerMock.Object);
         //act
-        _ioHandlerMock.Setup(x => x.GetUserInput()).Returns("5,5,5,5,-");
+        _readerMock.Setup(x => x.GetUserInput()).Returns("5,5,5,5,-");
         player.GetCurrentPlayerChoice();
         _parserMock.Setup(x => x.ConvertUserInputIntoNumberOfDiceToReRoll("5,5,5,5,-")).Returns(1);
         player.GetCurrentNumberOfDiceToReRoll();

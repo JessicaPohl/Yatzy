@@ -1,3 +1,4 @@
+using System.Text;
 using Yatzy.Interfaces;
 
 namespace Yatzy.Services;
@@ -26,14 +27,13 @@ public class Dice : IDice
 
     public string GetCurrentRolledDiceFormatted(int[] currentRoll)
     {
+        StringBuilder stringBuilder = new StringBuilder();
         List<string> currentRolledDiceList = new List<string>();
         foreach (int die in currentRoll)
         {
             currentRolledDiceList.Add(die.ToString());
         }
 
-        string currentRolledDiceOutput = string.Join(",", currentRolledDiceList);
-
-        return currentRolledDiceOutput;
+        return stringBuilder.Append(string.Join(",", currentRolledDiceList)).ToString();
     }
 }

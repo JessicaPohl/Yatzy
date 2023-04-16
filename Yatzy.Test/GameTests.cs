@@ -26,7 +26,7 @@ public class GameTests
     }
     
     [Fact]
-    public void WhenGameIsPlayed_EachPlayerGets13Turns()
+    public void WhenGameIsPlayed_PlayersPlayATurnUntilAllCategoriesHaveBeenScored()
     {
         //arrange
         //act

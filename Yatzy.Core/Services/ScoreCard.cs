@@ -74,8 +74,8 @@ public class ScoreCard : IScoreCard
         SetTotalScore();
         return score;
     }
-    
-    public void AddScore(ScoreCategory category, int score)
+
+    private void AddScore(ScoreCategory category, int score)
     {
         _scores[category] = score;
     }
@@ -163,14 +163,9 @@ public class ScoreCard : IScoreCard
         }
 
     private int GetScoreForYatzy(List<int> currentSelectedDice)
-        {
-            foreach (var number in currentSelectedDice.Distinct())
-            {
-                int count = currentSelectedDice.Count(n => n == number);
-                if (count == 5) return 50;
-            }
-            return 0;
-        }
+    {
+        return currentSelectedDice.Distinct().Count() == 1 ? 50 : 0;
+    }
 
     private int GetScoreForChance(List<int> currentSelectedDice)
         {

@@ -11,7 +11,7 @@ public class Game
     private readonly IInputOutputHandler _inputOutputHandler;
     private readonly IScoreCard _scoreCard1;
     private readonly IScoreCard _scoreCard2;
-    private readonly int _totalNumberOfTurns = 13;
+    private int _totalNumberOfTurns = 13;
 
     public Game(ITurn turn, IDice dice, IPlayer player1, IPlayer player2, IInputOutputHandler inputOutputHandler,
         IScoreCard scoreCard1, IScoreCard scoreCard2)
@@ -28,12 +28,13 @@ public class Game
     public void PlayGame()
     {
         SetupGame(_player1, _player2);
-        for (var i = 0; i < _totalNumberOfTurns; i++)
+        while(_totalNumberOfTurns != 0)
         {
             _inputOutputHandler.PrintTurnAnnouncement(_player1);
             _turn.TakeTurn(_dice, _player1, _scoreCard1);
             _inputOutputHandler.PrintTurnAnnouncement(_player2);
             _turn.TakeTurn(_dice, _player2, _scoreCard2);
+            _totalNumberOfTurns--;
         }
         PrintFinalScores();
         DeclareWinner();

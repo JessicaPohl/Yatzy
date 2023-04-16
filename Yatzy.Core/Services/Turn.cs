@@ -30,7 +30,6 @@ public class Turn : ITurn
             CurrentDiceRoll = dice.RollDice(player.AvailableDice);
             _writer.PrintCurrentDiceRoll(player, dice, CurrentDiceRoll);
             _writer.Print(Constants.Messages.DiceSelectionPrompt);
-            player.GetCurrentPlayerChoice();
             ValidateDiceChoice(player);
             player.AddSelectedDiceToAllKeptDice(player);
             _writer.PrintCurrentDiceSelection(player);

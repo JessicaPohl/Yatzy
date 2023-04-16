@@ -62,7 +62,6 @@ public class TurnTests
             Times.Once);
         _playerMock.VerifySet(x => x.AvailableDice = 5, Times.Once);
         _diceMock.Verify(x => x.RollDice(5), Times.Exactly(3));
-        _playerMock.Verify(x => x.GetCurrentPlayerChoice(), Times.Exactly(3));
         _writerMock.Verify(x => x.PrintCurrentDiceSelection(_playerMock.Object), Times.Exactly(3));
         _playerMock.Verify(x => x.GetCurrentNumberOfDiceToReRoll(), Times.Exactly(3));
         _playerMock.Verify(x => x.AddSelectedDiceToAllKeptDice(_playerMock.Object), Times.Exactly(3));

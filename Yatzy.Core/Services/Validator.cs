@@ -16,75 +16,69 @@ public class Validator : IValidator
 
     public bool IsValidDiceChoice()
     {
+        // representing a roll and re-roll selection as a Set<Dice> & taking the difference of the two sets
+        // implementing an IComparator<IndexedDice> which identifies a dice by its index
+
         string regex = @"^(-|\d),(-|\d),(-|\d),(-|\d),(-|\d)$";
+        
         var currentPlayerChoice = _player.CurrentPlayerChoice;
+        var currentRolledDice = _dice.CurrentRolledDice;
+        var currentRolledDiceFormatted = _dice.GetCurrentRolledDiceFormatted(currentRolledDice);
+        
         if (!Regex.IsMatch(currentPlayerChoice, regex)) return false;
 
-        List<int> currentSelectedDice = Regex.Matches(_player.CurrentPlayerChoice, "([0-9]+)")
-            .Select(m => int.Parse(m.Value))
-            .ToList();
-        List<int> currentRolledDice = Regex
-            .Matches(_dice.GetCurrentRolledDiceFormatted(_dice.CurrentRolledDice), "([0-9]+)")
-            .Select(m => int.Parse(m.Value))
-            .ToList();
+        var currentSelectedDiceIndexed = _player.CurrentPlayerChoice?.Split(',')
+            .Where(c => char.IsDigit(Convert.ToChar(c)))
+            .Select(int.Parse)
+            .Select(index => new IndexedDice(index));
 
-        List<int> previousKeptDice = _player.PreviousKeptDice.ToList();
-        List<int> allKeptDice = currentRolledDice.Concat(previousKeptDice).ToList();
-        
-        Dictionary<int, int> rolledDiceCount = new Dictionary<int, int>();
+        var currentRolledDiceIndexed = currentRolledDiceFormatted
+            .Split(',')
+            .Where(c => char.IsDigit(Convert.ToChar(c)))
+            .Select(int.Parse)
+            .Select(index => new IndexedDice(index));
 
-        foreach (int value in currentRolledDice)
+        var previousKeptDiceIndexed = _player.PreviousKeptDice.Select(d => new IndexedDice(d)).ToHashSet();
+        var allKeptDiceIndexed = currentRolledDiceIndexed.Concat(previousKeptDiceIndexed).ToHashSet();
+
+        var diceComparer = new DiceIndexEqualityComparer();
+        var selectedDiceSet = currentSelectedDiceIndexed.ToHashSet(diceComparer);
+        var keptDiceSet = allKeptDiceIndexed.ToHashSet((diceComparer));
+        var differenceDiceSet = keptDiceSet.Except(selectedDiceSet).ToList();
+
+        return differenceDiceSet.Count == 0;
+    }
+
+    private class IndexedDice
+    {
+        public int Index { get; }
+ 
+        public IndexedDice(int index)
         {
-            if (rolledDiceCount.ContainsKey(value))
-            {
-                rolledDiceCount[value]++;
-            }
-            else
-            {
-                rolledDiceCount[value] = 1;
-            }
+            Index = index;
         }
-        
-        Dictionary<int, int> currentSelectedDiceCount = new Dictionary<int, int>();
-
-        foreach (int value in currentSelectedDice)
+         
+        public override bool Equals(object? obj)
         {
-            if (currentSelectedDiceCount.ContainsKey(value))
-            {
-                currentSelectedDiceCount[value]++;
-            }
-            else
-            {
-                currentSelectedDiceCount[value] = 1;
-            }
-        }
-        
-        Dictionary<int, int> allKeptDiceCount = new Dictionary<int, int>();
-        foreach (int value in allKeptDice)
-        {
-            if (allKeptDiceCount.ContainsKey(value))
-            {
-                allKeptDiceCount[value]++;
-            }
-            else
-            {
-                allKeptDiceCount[value] = 1;
-            }
-        }
-        
-        foreach (int value in currentSelectedDice)
-        {
-            if (!allKeptDiceCount.ContainsKey(value))
-            {
-                return false;
-            }
-
-            if (currentSelectedDiceCount[value] > allKeptDiceCount[value])
-            {
-                return false;
-            }
+            return obj is IndexedDice dice && Index == dice.Index;
         }
 
-        return true;
+        public override int GetHashCode()
+        {
+            return Index;
+        }
+    }
+ 
+    private class DiceIndexEqualityComparer : IEqualityComparer<IndexedDice>
+    {
+        public bool Equals(IndexedDice? x, IndexedDice? y)
+        {
+            return x.Index == y.Index;
+        }
+ 
+        public int GetHashCode(IndexedDice obj)
+        {
+            return obj.Index;
+        }
     }
 }

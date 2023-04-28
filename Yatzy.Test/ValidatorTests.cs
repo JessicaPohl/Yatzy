@@ -34,7 +34,7 @@ public class ValidatorTests
         //assert
         Assert.Equal(expectedValidatorResult, actualValidatorResult);
     }
-    
+
     [Theory]
     [InlineData("5,5,5,5,5", "5,5,5,5,5", true)]
     [InlineData("4,4,4,4,4", "4,4,4,4,4", true)]

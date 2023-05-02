@@ -35,9 +35,9 @@ public class Writer : IWriter
             dice.GetCurrentRolledDiceFormatted(currentDiceRoll));
     }
 
-    public void PrintCurrentDiceSelection(IPlayer player)
+    public void PrintCurrentDiceSelection(int[] selectedDice)
     {
-        Console.WriteLine(Constants.Messages.CurrentDiceSelection, player.CurrentPlayerChoice);
+        Console.WriteLine(Constants.Messages.CurrentDiceSelection, selectedDice);
     }
 
     public void PrintHowManyDicePickedForReRoll(IPlayer player)

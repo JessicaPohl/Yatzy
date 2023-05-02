@@ -46,7 +46,7 @@ public class ScoreCardTests
         _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns(currentSelectedDice);
         var scoreCard = new ScoreCard(_playerMock.Object);
         //act
-        scoreCard.CalculateScore();
+        scoreCard.CalculateScore(category);
         var actualScore = scoreCard.TotalScore;
         //assert
         Assert.Equal(expectedScore, actualScore);
@@ -64,7 +64,7 @@ public class ScoreCardTests
         _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns(currentSelectedDice);
         var scoreCard = new ScoreCard(_playerMock.Object);
         //act
-        scoreCard.CalculateScore();
+        scoreCard.CalculateScore(category);
         var actualScore = scoreCard.TotalScore;
         //assert
         Assert.Equal(expectedScore, actualScore);
@@ -82,7 +82,7 @@ public class ScoreCardTests
         _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns(currentSelectedDice);
         var scoreCard = new ScoreCard(_playerMock.Object);
         //act
-        scoreCard.CalculateScore();
+        scoreCard.CalculateScore(category);
         var actualScore = scoreCard.TotalScore;
         //assert
         Assert.Equal(expectedScore, actualScore);
@@ -100,7 +100,7 @@ public class ScoreCardTests
         _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns(currentSelectedDice);
         var scoreCard = new ScoreCard(_playerMock.Object);
         //act
-        scoreCard.CalculateScore();
+        scoreCard.CalculateScore(category);
         var actualScore = scoreCard.TotalScore;
         //assert
         Assert.Equal(expectedScore, actualScore);
@@ -118,7 +118,7 @@ public class ScoreCardTests
         _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns(currentSelectedDice);
         var scoreCard = new ScoreCard(_playerMock.Object);
         //act
-        scoreCard.CalculateScore();
+        scoreCard.CalculateScore(category);
         var actualScore = scoreCard.TotalScore;
         //assert
         Assert.Equal(expectedScore, actualScore);
@@ -136,7 +136,7 @@ public class ScoreCardTests
         _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns(currentSelectedDice);
         var scoreCard = new ScoreCard(_playerMock.Object);
         //act
-        scoreCard.CalculateScore();
+        scoreCard.CalculateScore(category);
         var actualScore = scoreCard.TotalScore;
         //assert
         Assert.Equal(expectedScore, actualScore);
@@ -155,7 +155,7 @@ public class ScoreCardTests
         _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns(currentSelectedDice);
         var scoreCard = new ScoreCard(_playerMock.Object);
         //act
-        scoreCard.CalculateScore();
+        scoreCard.CalculateScore(category);
         var actualScore = scoreCard.TotalScore;
         //assert
         Assert.Equal(expectedScore, actualScore);
@@ -174,7 +174,7 @@ public class ScoreCardTests
         _playerMock.SetupGet(x => x.CurrentPlayerChoice).Returns(currentSelectedDice);
         var scoreCard = new ScoreCard(_playerMock.Object);
         //act
-        scoreCard.CalculateScore();
+        scoreCard.CalculateScore(category);
         var actualScore = scoreCard.TotalScore;
         //assert
         Assert.Equal(expectedScore, actualScore);

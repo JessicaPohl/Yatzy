@@ -14,7 +14,7 @@ public interface IWriter
 
     public void PrintCurrentDiceRoll(IPlayer player, IDice dice, int[] currentDiceRoll);
 
-    public void PrintCurrentDiceSelection(IPlayer player);
+    public void PrintCurrentDiceSelection(int[] selectedDice);
 
     public void PrintHowManyDicePickedForReRoll(IPlayer player);
 

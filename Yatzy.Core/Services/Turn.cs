@@ -24,15 +24,14 @@ public class Turn : ITurn
     public void TakeTurn(IDice dice, IPlayer player, IScoreCard scoreCard)
     {
         player.AvailableDice = 5;
-
+        
         while (NumberOfRollsLeft > 0)
         {
             CurrentDiceRoll = dice.RollDice(player.AvailableDice);
             _writer.PrintCurrentDiceRoll(player, dice, CurrentDiceRoll);
-            _writer.Print(Constants.Messages.DiceSelectionPrompt);
-            ValidateDiceChoice(player);
-            player.AddSelectedDiceToAllKeptDice(player);
-            _writer.PrintCurrentDiceSelection(player);
+            var selectedDice = GetValidSelectedDice(player);
+            _writer.PrintCurrentDiceSelection(selectedDice);
+
             player.GetCurrentNumberOfDiceToReRoll();
             NumberOfRollsLeft--;
             if (player.AvailableDice == 0)
@@ -40,18 +39,33 @@ public class Turn : ITurn
                 NumberOfRollsLeft = 0;
                 break;
             }
-
             _writer.PrintHowManyDicePickedForReRoll(player);
         }
+        
+        var selectedCategory = GetValidSelectedCategory(player, scoreCard);
+        scoreCard.CalculateScore(selectedCategory);
+        _writer.PrintCategoryScore(player, scoreCard);
+        
+        NumberOfRollsLeft = 3;
+    }
 
+    private int[] GetValidSelectedDice(IPlayer player)
+    {
+        var selectedDice = new int[5];
+        
+        _writer.Print(Constants.Messages.DiceSelectionPrompt);
+        ValidateDiceChoice(player);
+        player.AddSelectedDiceToAllKeptDice(player);
+
+        return selectedDice;
+    }
+    
+    private ScoreCategory GetValidSelectedCategory(IPlayer player, IScoreCard scoreCard)
+    {
         _writer.Print(Constants.Messages.ScoreCategoryInstruction);
         PrintAvailableScoreCategories(scoreCard);
         _writer.Print(Constants.Messages.ScoreCategoryPrompt);
-        GetValidCategoryChoice(player, scoreCard);
-
-        scoreCard.CalculateScore();
-        _writer.PrintCategoryScore(player, scoreCard);
-        NumberOfRollsLeft = 3;
+        return GetValidCategoryChoice(player, scoreCard);
     }
 
     private void ValidateDiceChoice(IPlayer player)
@@ -74,7 +88,7 @@ public class Turn : ITurn
         }
     }
 
-    private void GetValidCategoryChoice(IPlayer player, IScoreCard scoreCard)
+    private ScoreCategory GetValidCategoryChoice(IPlayer player, IScoreCard scoreCard)
     {
         int.TryParse(_reader.GetUserInput(), out var categoryChoice);
         
@@ -90,6 +104,6 @@ public class Turn : ITurn
                 _writer.Print(Constants.Messages.CategoryAlreadyScored);
             }
         }
-        player.ChosenCategory = (ScoreCategory)categoryChoice;
+        return player.ChosenCategory = (ScoreCategory)categoryChoice;
     }
 }

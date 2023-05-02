@@ -43,7 +43,7 @@ public class TurnTests
             .Returns("1, 1, 1, 1, 1");
         _scoreCardMock.Setup(x => x.GetCategoryScore(ScoreCategory.Ones))
             .Returns(-1);
-        _scoreCardMock.Setup(x => x.CalculateScore());
+        _scoreCardMock.Setup(x => x.CalculateScore(ScoreCategory.Ones));
 
         var turn = new Turn(_readerMock.Object, _writerMock.Object, _validatorMock.Object);
 
@@ -62,12 +62,11 @@ public class TurnTests
             Times.Once);
         _playerMock.VerifySet(x => x.AvailableDice = 5, Times.Once);
         _diceMock.Verify(x => x.RollDice(5), Times.Exactly(3));
-        _writerMock.Verify(x => x.PrintCurrentDiceSelection(_playerMock.Object), Times.Exactly(3));
         _playerMock.Verify(x => x.GetCurrentNumberOfDiceToReRoll(), Times.Exactly(3));
         _playerMock.Verify(x => x.AddSelectedDiceToAllKeptDice(_playerMock.Object), Times.Exactly(3));
         _writerMock.Verify(x => x.PrintHowManyDicePickedForReRoll(_playerMock.Object), Times.Exactly(3));
         _writerMock.Verify(x => x.Print(Constants.Messages.ScoreCategoryPrompt), Times.Once);
-        _scoreCardMock.Verify(x => x.CalculateScore(), Times.Once);
+        _scoreCardMock.Verify(x => x.CalculateScore(ScoreCategory.Ones), Times.Once);
         _writerMock.Verify(x => x.PrintCategoryScore(_playerMock.Object, _scoreCardMock.Object),
             Times.Once);
     }

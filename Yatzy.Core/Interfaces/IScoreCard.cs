@@ -6,5 +6,5 @@ public interface IScoreCard
 {
     public int TotalScore { get; }
     public int GetCategoryScore(ScoreCategory category);
-    public int CalculateScore();
+    public int CalculateScore(ScoreCategory selectedCategory);
 }

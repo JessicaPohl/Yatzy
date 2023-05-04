@@ -34,6 +34,7 @@ public class Turn : ITurn
 
             player.GetCurrentNumberOfDiceToReRoll();
             NumberOfRollsLeft--;
+            
             if (player.AvailableDice == 0)
             {
                 NumberOfRollsLeft = 0;
